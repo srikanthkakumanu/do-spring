@@ -1,4 +1,4 @@
-<div class="text-align:justify;">
+<div style="text-align: justify">
 
 # Spring Framework Concepts
 
