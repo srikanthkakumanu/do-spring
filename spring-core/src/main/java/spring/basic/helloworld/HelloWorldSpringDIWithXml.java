@@ -1,9 +1,10 @@
-package spring.basic;
+package spring.basic.helloworld;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import spring.basic.decoupled.MessageRenderer;
 
-public class HelloWorldSpringDI {
+public class HelloWorldSpringDIWithXml {
     public static void main(String[] args) {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("xml/app-context.xml");
         MessageRenderer mr = ctx.getBean("renderer", MessageRenderer.class);

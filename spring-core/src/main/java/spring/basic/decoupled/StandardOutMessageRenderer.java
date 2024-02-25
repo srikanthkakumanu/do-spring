@@ -1,4 +1,4 @@
-package spring.basic;
+package spring.basic.decoupled;
 
 import static java.lang.System.*;
 

@@ -1,4 +1,4 @@
-package spring.basic;
+package spring.basic.decoupled;
 
 public interface MessageRenderer {
     void render();

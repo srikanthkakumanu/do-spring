@@ -1,9 +1,9 @@
-package spring.basic;
+package spring.basic.decoupled;
 
 public class HelloWorldMessageProvider implements MessageProvider {
 
     public HelloWorldMessageProvider(){
-        System.out.println(" --> HelloWorldMessageProvider: constructor caled");
+        System.out.println(" --> HelloWorldMessageProvider: constructor called");
     }
 
     @Override
