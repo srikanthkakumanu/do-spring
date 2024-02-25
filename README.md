@@ -92,7 +92,7 @@ Dependency lookup comes in two types — **Dependency Pull** and **Contextualize
 **Dependency Pull** — is the most familiar type of IoC.  In dependency pull, dependencies are pulled from a registry (JNDI) as required. Technology such as EJB has used dependency pull (via the JNDI API to look up an EJB component).
 Spring also offers _dependency pull_ as a mechanism for retrieving the components that the framework manages in the above given `HelloWorldSpringDIWithAnnotations` example.
 
-Contextualized Dependency Lookup (CDL) — In some aspects it is similar to dependency pull. However in CDL, lookup is performed against the container that is managing the resource, not from some central registry, and it is usually performed at some set point.
+**Contextualized Dependency Lookup (CDL)** — In some aspects it is similar to dependency pull. However in CDL, lookup is performed against the container that is managing the resource, not from some central registry, and it is usually performed at some set point.
 CDL works by having the component that requires a dependency implement an interface.
 
 The drawback of dependency lookup is that your classes are always dependent on the classes and interfaces defined by the container. Another drawback with lookup is that testing your classes in isolation from the container becomes difficult.
