@@ -8,8 +8,8 @@ by Spring -->
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="provider" class="spring.basic.decoupled.HelloWorldMessageProvider"/>
+    <bean id="provider" class="spring.core.decoupled.HelloWorldMessageProvider"/>
 
-    <bean id="renderer" class="spring.basic.decoupled.StandardOutMessageRenderer"
+    <bean id="renderer" class="spring.core.decoupled.StandardOutMessageRenderer"
           p:messageProvider-ref="provider"/>
 </beans>

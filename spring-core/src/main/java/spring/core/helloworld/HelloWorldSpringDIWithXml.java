@@ -1,8 +1,8 @@
-package spring.basic.helloworld;
+package spring.core.helloworld;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import spring.basic.decoupled.MessageRenderer;
+import spring.core.decoupled.MessageRenderer;
 
 public class HelloWorldSpringDIWithXml {
     public static void main(String[] args) {

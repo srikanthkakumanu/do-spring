@@ -1,10 +1,10 @@
-package spring.basic.helloworld;
+package spring.core.helloworld;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import spring.basic.decoupled.HelloWorldConfiguration;
-import spring.basic.decoupled.MessageRenderer;
-import spring.basic.decoupled.StandardOutMessageRenderer;
+import spring.core.decoupled.HelloWorldConfiguration;
+import spring.core.decoupled.MessageRenderer;
+import spring.core.decoupled.StandardOutMessageRenderer;
 
 public class HelloWorldSpringDIWithAnnotations {
     public static void main(String[] args) {

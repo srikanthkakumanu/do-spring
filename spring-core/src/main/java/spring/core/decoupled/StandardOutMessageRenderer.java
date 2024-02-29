@@ -1,4 +1,4 @@
-package spring.basic.decoupled;
+package spring.core.decoupled;
 
 import static java.lang.System.*;
 
@@ -21,13 +21,13 @@ public class StandardOutMessageRenderer implements MessageRenderer {
     }
 
     @Override
-    public void setMessageProvider(MessageProvider provider) {
+    public void setProvider(MessageProvider provider) {
         out.println(" --> StandardOutMessageRenderer: setting the provider");
         this.messageProvider = provider;
     }
 
     @Override
-    public MessageProvider getMessageProvider() {
+    public MessageProvider getProvider() {
         return this.messageProvider;
     }
 }

@@ -1,4 +1,4 @@
-package spring.basic.decoupled;
+package spring.core.decoupled;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +15,7 @@ public class HelloWorldConfiguration {
     @Bean // equivalent to <bean id="renderer" class = "..."/>
     public MessageRenderer renderer() {
         MessageRenderer renderer = new StandardOutMessageRenderer();
-        renderer.setMessageProvider(provider());
+        renderer.setProvider(provider());
         return renderer;
     }
 }

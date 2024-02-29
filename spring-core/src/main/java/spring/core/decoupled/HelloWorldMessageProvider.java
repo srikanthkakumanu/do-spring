@@ -1,4 +1,4 @@
-package spring.basic.decoupled;
+package spring.core.decoupled;
 
 public class HelloWorldMessageProvider implements MessageProvider {
 
