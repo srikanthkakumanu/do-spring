@@ -441,6 +441,131 @@ calls to `ApplicationContext.getBean(..)` return the same instance.
 
 ## 7 — Bean Dependencies
 
+Spring can resolve dependencies by looking at your configuration files or annotations
+in your classes. But, Spring is not aware of any dependencies that exist between
+beans in your code that are not specified in the configuration.
+
+So, we can provide additional information about bean dependencies by using 
+`@DependsOn` annotation. Spring considers the bean to be instantiated first that is
+mentioned in `@DependsOn("...")` before instantiating the second bean that is
+dependent on first bean.
+
+For the second bean, to retrieve the dependency on its own, it needs to access 
+`ApplicationContext`. Thus, we need to tell Spring to inject this reference, 
+so when the secondBean.sing() method will be called, it can be used to procure 
+the first bean. This is done by making the second class implement the 
+`ApplicationContextAware` interface. This is a Spring-specific interface that 
+forces an implementation of a setter for an ApplicationContext object. 
+It is automatically detected by the Spring IoC container, 
+and the `ApplicationContext` that the bean is created in is injected into it. 
+This is done after the constructor of the bean is called, so obviously using 
+`ApplicationContext` in the constructor will lead to a `NullPointerException`.
+
+```java
+@Component("first")
+class First {
+    public void some() {}
+}
+
+@DependsOn("first")
+@Component("second")
+class Second implements ApplicationContextAware {
+    private ApplicationContext context;
+
+    public Second() {}
+
+    @Override
+    public void setApplicationContext(ApplicationContext context) throws BeansException {
+        this.context = context;
+    }
+
+    public void doSomething() {
+        First first = context.getBean("first", First.class);
+        first.some();
+    }
+}
+
+public class DependsOnDemo {
+    public static void main(String... args) {
+        var ctx = new AnnotationConfigApplicationContext();
+        ctx.register(Second.class, First.class);
+        ctx.refresh();
+
+        Second second = ctx.getBean("Second", Second.class);
+        second.doSomething();
+    }
+}
+```
+
+**Note —** When **developing your applications, avoid designing them to use this 
+feature. Instead, define your dependencies by means of _setter_ and _constructor_ 
+injection contracts**. However, **if you are integrating Spring with legacy code**, 
+you may find that the dependencies defined in the code require you to provide 
+extra information to the Spring Framework.
+
+
 ## 8 — Bean Autowiring
 
+**Autowiring is process of implicitly injecting beans into beans depending on them**. 
+Spring supports **five modes for autowiring**.
+
+- **`byName` —** When using `byName` autowiring, Spring attempts to wire each 
+property to a bean of the same name. So, if the target bean has a property 
+named _foo_ and a _foo_ bean is defined in `ApplicationContext`, the _foo_ bean 
+is assigned to the _foo_ property of the target.
+
+- **`byType` —** Spring attempts to wire each of the properties on the target bean 
+by automatically using a bean of the same type in `ApplicationContext`.
+
+- **`constructor` —** This functions just like byType wiring, except that it uses 
+constructors rather than setters to perform the injection. Spring attempts to 
+match the greatest numbers of arguments it can in the constructor. So, if your 
+bean has two constructors, one that accepts a String and one that accepts String 
+and an Integer, and you have both a String and an Integer bean in your 
+`ApplicationContext`, Spring uses the two-argument constructor.
+
+- **`default` —** Spring will choose between the `constructor` and `byType` modes 
+automatically. If your bean has a default (no-arguments) constructor, Spring uses 
+`byType`; otherwise, it uses `constructor`.
+
+- **`no` —** No autowiring, this is the default.
+
+
+### 8.1 — Constructor Autowiring
+
+When a dependency is provided using constructor injection, autowiring obviously is 
+done through the constructor. If the class has more than one constructor, 
+the constructor to be used is chosen based on a few conditions.
+
+- If none of the constructors is annotated with `@Autowired`, the most suitable 
+will be used. 
+- If more than one is suitable, Spring just uses the no-argument 
+constructor if there is one. 
+- If there is none, a `BeanInstantiationException` is thrown.
+
+### 8.2 — byType Autowiring
+
+When there are no constructors declared, but there are setters annotated with 
+`@Autowired`, Spring will use them and will identify the beans to be injected 
+based on their type.
+
+Spring injects dependencies by type when fields are directly annotated with 
+`@Autowired` too, **but field injection is discouraged**.
+
+### 8.3 — byName Autowiring
+
+The @Qualifier annotation can be used for autowiring `byName`.
+If `@Autowired` applied on a constructor with arguments, `@Qualifier` should be 
+placed on the argument, not on the constructor.
+
+### 8.4 — When to use Autowiring
+
+With `byType` **we can have only one bean for each type** in your `ApplicationContext`
+It is a restriction that is problematic when we need to maintain beans with 
+different configurations of the same type. The same argument applies to 
+the use **of constructor autowiring as well**.
+
+In some cases, autowiring can save you time, but it does not really take that 
+much extra effort to define your wiring explicitly, and you benefit from explicit 
+semantics and full flexibility on property naming and on how many instances of the same type you manage.
 </div>
