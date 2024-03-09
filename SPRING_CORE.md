@@ -565,7 +565,6 @@ It is a restriction that is problematic when we need to maintain beans with
 different configurations of the same type. The same argument applies to
 the use **of constructor autowiring as well**.
 
-In some cases, autowiring can save you time, but it does not really take that
-much extra effort to define your wiring explicitly, and you benefit from explicit
-semantics and full flexibility on property naming and on how many instances of the same type you manage.
+Ref Examples: https://github.com/Apress/pro-spring-6 
+
 </div>
