@@ -26,4 +26,4 @@ plugins {
 
 
 rootProject.name = 'do-spring'
-include('spring-core', 'spring-boot', 'utilities')
+include('spring-core', 'api', 'books')

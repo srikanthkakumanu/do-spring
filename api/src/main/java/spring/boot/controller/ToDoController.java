@@ -8,7 +8,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import spring.boot.builder.ToDoBuilder;
-import spring.boot.model.ToDo;
+import spring.boot.domain.ToDo;
 import spring.boot.repository.CommonRepository;
 import spring.boot.validation.ToDoValidationError;
 import spring.boot.validation.builder.ToDoValidationErrorBuilder;
@@ -64,9 +64,9 @@ public class ToDoController {
      * a method’s parameters. To trigger a validator, it is necessary to
      * annotate the data you want to validate with @NotNull, @NotBlank,
      * and other annotations.
-     * @param toDo
-     * @param errors
-     * @return
+     * @param toDo todo task
+     * @param errors errorMap
+     * @return JSON Response Entity
      */
     @RequestMapping(value="/todo",
             method = {RequestMethod.POST,RequestMethod.PUT})

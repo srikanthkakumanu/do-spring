@@ -1,7 +1,7 @@
 package spring.boot.service;
 
 import org.springframework.stereotype.Service;
-import spring.boot.model.Video;
+import spring.boot.domain.Video;
 
 import java.util.ArrayList;
 import java.util.List;

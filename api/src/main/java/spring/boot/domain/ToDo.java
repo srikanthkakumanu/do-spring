@@ -1,4 +1,4 @@
-package spring.boot.model;
+package spring.boot.domain;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

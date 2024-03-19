@@ -1,10 +1,9 @@
 package spring.boot.builder;
 
-import spring.boot.model.ToDo;
+import spring.boot.domain.ToDo;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.UUID;
 
 public final class ToDoBuilder {
 
