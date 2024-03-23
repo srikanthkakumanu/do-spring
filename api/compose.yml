@@ -3,7 +3,7 @@ version: "3"
 services:
   api:
     build: .
-    image: srik1980/y6api:v1
+    image: srik1980/api:v1
     ports:
     - 9000:9000
 
