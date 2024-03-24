@@ -43,7 +43,7 @@ Using a reference to the container, beans can be retrieved and used.
 
 ```java
 // A Spring configuration class
-@Configuration // equivalent to spring XML configuration file
+@Configuration // equivalent to api XML configuration file
 public class HelloWorldConfiguration {
 
     @Bean // equivalent to <bean id="provider" class = "..."/>
@@ -191,8 +191,8 @@ scanning occurs from the package of the class that declares this annotation,
 regardless of whether the class is _public_ or _package-private_.
 
 - `@ComponentScan` — without filters or includes, Spring scans/look for components in the current packages and its subpackages.
-- `@ComponentScan(basePackages = "spring.core")` — Spring to look for components in _spring.core_ or its subpackages.
-- `@ComponentScan(basePackages = { "spring.core.decoupled", "spring.core.dependency" })` — Spring to look for components in both packages and its subpackages.
+- `@ComponentScan(basePackages = "api.core")` — Spring to look for components in _spring.core_ or its subpackages.
+- `@ComponentScan(basePackages = { "api.core.decoupled", "api.core.dependency" })` — Spring to look for components in both packages and its subpackages.
 
 Component scanning is a time-consuming operation. Hence, it is good programming
 practice to try to limit the places where Spring will look for bean definitions
@@ -389,7 +389,7 @@ code generation library.
 ### 6.1 — Singleton Vs. non-singleton (prototype)
 
 - **singleton —** was used to describe beans that are created only once within the context.
-  **By default, all beans in spring are singletons**. This means Spring maintains a
+  **By default, all beans in api are singletons**. This means Spring maintains a
   single instance of the bean, all dependent objects use the same instance, and all
   calls to `ApplicationContext.getBean(..)` return the same instance.
 

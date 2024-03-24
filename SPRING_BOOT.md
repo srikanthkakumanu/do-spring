@@ -69,7 +69,7 @@ This mostly includes the annotation-based programming model Spring MVC has had f
 years. This means that the day you want to start writing reactive web apps, 
 you don’t have to learn a whole new paradigm to build web controllers.
 
-If we added spring-boot-starter-web, this is what it contains:
+If we added api-boot-starter-web, this is what it contains:
 - Spring MVC and the associated annotations found in Spring Web. 
 These are the Spring Framework bits that support servlet-based web apps.
 
@@ -150,12 +150,12 @@ it instead serializes the results using Jackson.
 
 **`ApplicationRunner` —** It is a Functional Interface with a `run()` method.
 `run()` will get executed, just after `ApplicationContext` is created and before 
-spring boot application startup. It takes `ApplicationArgument` which has 
+api boot application startup. It takes `ApplicationArgument` which has 
 convenient methods like `getOptionNames()`, `getOptionValues()` and `getSourceArgs()`.
 
 **`CommandLineRunner` —** It is also a Functional Interface with a `run()` method.
 `run()` will get executed, just after `ApplicationContext` is created and before
-spring boot application startup. It accepts the argument, which can be passed at the 
+api boot application startup. It accepts the argument, which can be passed at the 
 time of server startup.
 
 Both of them provide the same functionality and the only difference between 

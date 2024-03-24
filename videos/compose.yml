@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  videos:
+    build: .
+    image: srik1980/videos:v1
+    ports:
+    - 9003:9003
+

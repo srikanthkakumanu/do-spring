@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  todo:
+    build: .
+    image: srik1980/todo:v1
+    ports:
+    - 9002:9002
+
