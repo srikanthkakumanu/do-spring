@@ -1,0 +1,53 @@
+version: '3.8'
+services:
+  mariadb:
+    image: mariadb:latest
+#    image: mariadb:10.11.7-jammy
+    restart: on-failure
+    environment:
+      MARIADB_DATABASE: bookdb
+#      MARIADB_USER: root
+#      MARIADB_PASSWORD: root
+      MARIADB_ROOT_PASSWORD: root
+#    expose:
+#      - 40000
+    ports:
+      - 3306
+    volumes:
+      - mariadb:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    expose:
+      - 40001
+    ports:
+      - 40001:80
+    environment:
+      PMA_HOST: mariadb
+      PMA_PORT: 3306
+
+  books-service:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: srik1980/books-service:latest
+    ports:
+      - 9101:8080
+    depends_on:
+      - mariadb
+      - phpmyadmin
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_DATASOURCE_USERNAME: bookuser
+      SPRING_DATASOURCE_PASSWORD: bookuser
+      SPRING_JPA_HIBERNATE_DDL-AUTO: validate
+      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/bookdb?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+      SPRING_FLYWAY_USER: bookadmin
+      SPRING_FLYWAY_PASSWORD: bookadmin
+      BOOK-SERVICE-HOST: http://books-service:9101
+    restart: on-failure
+
+volumes:
+  mariadb:
+    driver: local

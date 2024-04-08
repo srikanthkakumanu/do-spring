@@ -16,6 +16,7 @@ pluginManagement {
         maven { url "https://repo.spring.io/milestone" }
         maven { url "https://repo.spring.io/libs-milestone-local" }
         gradlePluginPortal()
+        google()
     }
 }
 
@@ -26,4 +27,4 @@ plugins {
 
 
 rootProject.name = 'do-spring'
-include('spring-core', 'api', 'todo', 'videos', 'books')
+include('spring-core', 'api', 'todo-service', 'videos-service', 'books-service')
