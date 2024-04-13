@@ -36,7 +36,11 @@ dependencies {
 application {
     //mainClassName = 'spring.boot.apps.App'
     //mainClassName = 'spring.boot.apps.AppWithApplicationArguments'
-    mainClassName = 'api.apps.AppWithRunners'
+    mainClassName = 'todo.apps.AppWithRunners'
+}
+
+bootJar {
+    archiveFileName = 'todo-service.jar'
 }
 
 // To pass command line arguments to Spring Boot Application from Gradle
@@ -46,6 +50,8 @@ bootRun {
     if (project.hasProperty('args')) {
         args project.args.split(',')
     }
+    String activeProfile =  System.properties['spring.profiles.active']
+    systemProperty "spring.profiles.active", activeProfile
 }
 
 tasks.named('test') {

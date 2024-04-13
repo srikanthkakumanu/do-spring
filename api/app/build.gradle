@@ -18,6 +18,7 @@ configurations {
 repositories {
     mavenLocal()
     mavenCentral()
+    google()
 }
 
 dependencies {
@@ -36,7 +37,7 @@ dependencies {
 application {
     //mainClassName = 'spring.boot.apps.App'
     //mainClassName = 'spring.boot.apps.AppWithApplicationArguments'
-    mainClassName = 'todo.apps.AppWithRunners'
+    mainClassName = 'api.apps.AppWithRunners'
 }
 
 // To pass command line arguments to Spring Boot Application from Gradle
@@ -46,6 +47,10 @@ bootRun {
     if (project.hasProperty('args')) {
         args project.args.split(',')
     }
+}
+
+bootJar {
+    archiveFileName = 'api.jar'
 }
 
 tasks.named('test') {

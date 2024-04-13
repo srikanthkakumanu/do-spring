@@ -38,7 +38,7 @@ services:
       - mariadb
       - phpmyadmin
     environment:
-      SPRING_PROFILES_ACTIVE: dev
+      SPRING_PROFILES_ACTIVE: dev, clean
       SPRING_DATASOURCE_USERNAME: bookuser
       SPRING_DATASOURCE_PASSWORD: bookuser
       SPRING_JPA_HIBERNATE_DDL-AUTO: validate

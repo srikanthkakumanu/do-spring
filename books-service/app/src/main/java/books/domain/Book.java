@@ -16,19 +16,20 @@ import java.time.Instant;
 public class Book {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private String isbn;
     private String publisher;
+    private Long authorId;
 
-    public Book(String title, String isbn, String publisher) {
+    public Book(String title, String isbn, String publisher, Long authorId) {
         this.title = title;
         this.isbn = isbn;
         this.publisher = publisher;
     }
 
-    public Book(Long id, String title, String isbn, String publisher) {
+    public Book(Long id, String title, String isbn, String publisher, Long authorId) {
         this.id = id;
         this.title = title;
         this.isbn = isbn;

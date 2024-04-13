@@ -48,6 +48,10 @@ bootRun {
     }
 }
 
+bootJar {
+    archiveFileName = 'videos-service.jar'
+}
+
 tasks.named('test') {
     useJUnitPlatform()
 }
