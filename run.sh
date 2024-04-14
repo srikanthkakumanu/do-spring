@@ -1,15 +1,15 @@
 #! /bin/bash
 
+USAGE_PROMPT="[./run.sh up|down|remove]"
 ARGS_COUNT=$#
 PROJECT_DIRS=("api" "books-service" "todo-service" "videos-service")
 ARTIFACTORY_PREFIX="srik1980"
 
 if [ $ARGS_COUNT == 0 ]; then
-  echo "Usage: [./run.sh up|down|remove]"
+  echo "Usage: $USAGE_PROMPT"
   exit 1
 elif [ $ARGS_COUNT -gt 1 ]; then
-  echo "ERROR: Invalid Arguments - Argument Count must be 1 and it should be 'up' or 'down' or 'remove'"
-  echo "Usage: [./run.sh up|down|remove]"
+  echo "ERROR: Invalid Arguments - Argument Count must be 1 and correct usage: $USAGE_PROMPT"
   exit 1
 fi
 
@@ -45,6 +45,6 @@ elif [ "$1" = "remove" ]; then
   exit 0
 
 else
-  echo "Wrong Argument Usage: It should be: [./run.sh up|down|remove]"
+  echo "Wrong Argument. It should be: $USAGE_PROMPT"
   exit 1
 fi
