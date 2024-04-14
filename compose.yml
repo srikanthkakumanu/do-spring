@@ -28,27 +28,6 @@ services:
       PMA_HOST: mariadb
       PMA_PORT: 3306
 
-#  books-service:
-#    build:
-#      context: .
-#      dockerfile: ./books-service/Dockerfile
-#    image: srik1980/books-service:latest
-#    ports:
-#      - 9102:8080
-#    depends_on:
-#      - mariadb
-#      - phpmyadmin
-#    environment:
-#      SPRING_PROFILES_ACTIVE: dev
-#      SPRING_DATASOURCE_USERNAME: bookuser
-#      SPRING_DATASOURCE_PASSWORD: bookuser
-#      SPRING_JPA_HIBERNATE_DDL-AUTO: validate
-#      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/bookdb?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
-#      SPRING_FLYWAY_USER: bookadmin
-#      SPRING_FLYWAY_PASSWORD: bookadmin
-#      BOOK-SERVICE-HOST: http://books-service:9102
-#    restart: on-failure
-
   api:
     build:
       context: .
@@ -68,6 +47,27 @@ services:
       SPRING_FLYWAY_USER: bookadmin
       SPRING_FLYWAY_PASSWORD: bookadmin
       API-SERVICE-HOST: http://api:9101
+    restart: on-failure
+
+  books-service:
+    build:
+      context: .
+      dockerfile: ./books-service/Dockerfile
+    image: srik1980/books-service:latest
+    ports:
+      - 9102:8080
+    depends_on:
+      - mariadb
+      - phpmyadmin
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_DATASOURCE_USERNAME: bookuser
+      SPRING_DATASOURCE_PASSWORD: bookuser
+      SPRING_JPA_HIBERNATE_DDL-AUTO: validate
+      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/bookdb?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+      SPRING_FLYWAY_USER: bookadmin
+      SPRING_FLYWAY_PASSWORD: bookadmin
+      BOOK-SERVICE-HOST: http://books-service:9102
     restart: on-failure
 
   todo:

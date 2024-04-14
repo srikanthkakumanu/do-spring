@@ -1,16 +1,15 @@
 #! /bin/bash
 
 ARGS_COUNT=$#
-# PROJECT_DIRS=("api" "books-service" "todo-service" "videos-service")
-PROJECT_DIRS=("api" "todo-service" "videos-service")
+PROJECT_DIRS=("api" "books-service" "todo-service" "videos-service")
 ARTIFACTORY_PREFIX="srik1980"
 
 if [ $ARGS_COUNT == 0 ]; then
-  echo "Usage: [./build-project.sh up] or [./build-project.sh down]"
+  echo "Usage: [./run.sh up|down|remove]"
   exit 1
 elif [ $ARGS_COUNT -gt 1 ]; then
-  echo "ERROR: Invalid Arguments - Argument Count must be 1 and it should be 'up' or 'down'"
-  echo "Usage: [./build-project.sh up] or [./build-project.sh down]"
+  echo "ERROR: Invalid Arguments - Argument Count must be 1 and it should be 'up' or 'down' or 'remove'"
+  echo "Usage: [./run.sh up|down|remove]"
   exit 1
 fi
 
@@ -18,7 +17,6 @@ if [ "$1" = "up" ]; then
   clear
   echo "Building Projects..."
   for dir_name in "${PROJECT_DIRS[@]}"; do
-    echo "Building $dir_name project..."
     [ -d "/$dir_name/app/build" ] && ./gradlew clean build || ./gradlew build
   done
 
@@ -26,21 +24,27 @@ if [ "$1" = "up" ]; then
   docker compose up -d
   echo "Containers are Up Now..."
   exit 0
+
 elif [ "$1" = "down" ]; then
   clear
   echo "Shutting down Containers..."
   docker compose down
+  exit 0
 
+elif [ "$1" = "remove" ]; then
+  clear
+  echo "Shutting down Containers..."
+  docker compose down
   echo "Removing service containers..."
   for dir_name in "${PROJECT_DIRS[@]}"; do
     echo "Removing $dir_name Image..."
     docker rmi $(docker images | grep -E $ARTIFACTORY_PREFIX/$dir_name | awk '{print $3}')
   done
-
   echo "Removed service containers..."
   echo "Shutdown completed."
   exit 0
+
 else
-  echo "Wrong Argument Usage: It should be [./build-project.sh up] or [./build-project.sh down]"
+  echo "Wrong Argument Usage: It should be: [./run.sh up|down|remove]"
   exit 1
 fi

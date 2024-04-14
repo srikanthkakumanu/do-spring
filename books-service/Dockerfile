@@ -1,7 +1,7 @@
 FROM eclipse-temurin:21
 LABEL authors="skakumanu"
 RUN mkdir /opt/apps
-COPY app/build/libs/books-service.jar /opt/apps/books-service.jar
+COPY /books-service/app/build/libs/books-service.jar /opt/apps/books-service.jar
 #EXPOSE 9101
 ENTRYPOINT exec java $JAVA_OPTS -jar /opt/apps/books-service.jar
 #ENTRYPOINT exec java $JAVA_OPTS -Dspring.active.profiles=dev -jar /opt/apps/books-service.jar
