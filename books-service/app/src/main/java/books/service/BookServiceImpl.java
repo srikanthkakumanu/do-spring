@@ -3,7 +3,7 @@ package books.service;
 import books.domain.Book;
 import books.mapper.BaseMapper;
 import books.model.BookDTO;
-import books.repositories.BookRepository;
+import books.repository.BookRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,8 @@
 package books.bootstrap;
 
-import books.repositories.BookRepository;
+import books.domain.AuthorUUID;
+import books.repository.AuthorUUIDRepository;
+import books.repository.BookRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
@@ -13,9 +15,11 @@ import books.domain.Book;
 public class BooksDataInitializer implements CommandLineRunner {
 
     private final BookRepository bookRepository;
+    private final AuthorUUIDRepository authorUUIDRepository;
 
-    public BooksDataInitializer(BookRepository bookRepository) {
+    public BooksDataInitializer(BookRepository bookRepository, AuthorUUIDRepository authorUUIDRepository) {
         this.bookRepository = bookRepository;
+        this.authorUUIDRepository = authorUUIDRepository;
     }
 
     @Override
@@ -40,5 +44,11 @@ public class BooksDataInitializer implements CommandLineRunner {
         bookRepository.findAll().forEach(book ->
             log.debug("[Book Id: {}, Book Title: {}]", book.getId(), book.getTitle())
         );
+
+        AuthorUUID authorUuid = new AuthorUUID();
+        authorUuid.setFirstName("Tom");
+        authorUuid.setLastName("Jerry");
+        AuthorUUID savedAuthor = authorUUIDRepository.save(authorUuid);
+        log.debug("Saved Author UUID: {}", savedAuthor.getId());
     }
 }

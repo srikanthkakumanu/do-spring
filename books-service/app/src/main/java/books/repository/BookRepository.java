@@ -1,4 +1,4 @@
-package books.repositories;
+package books.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import books.domain.Book;
