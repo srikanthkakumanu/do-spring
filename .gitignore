@@ -5,6 +5,4 @@
 # Ignore Gradle build output directory
 build
 */bin
-/api/app/bin/
-/todo-service/app/bin/
-/videos-service/app/bin/
+*/app/bin/
