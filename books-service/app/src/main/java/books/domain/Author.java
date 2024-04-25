@@ -24,9 +24,11 @@ public class Author {
 
     private String firstName;
     private String lastName;
+    private String genre;
 
-    public Author(String firstName, String lastName) {
+    public Author(String firstName, String lastName, String genre) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.genre = genre;
     }
 }

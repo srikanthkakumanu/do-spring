@@ -16,6 +16,7 @@ public class AuthorMapper {
         if (domain.getId() != null) dto.setId(domain.getId());
         if (domain.getFirstName() != null) dto.setFirstName(domain.getFirstName());
         if (domain.getLastName() != null) dto.setLastName(domain.getLastName());
+        if (domain.getGenre() != null) dto.setGenre(domain.getGenre());
         return dto;
     }
 
@@ -24,7 +25,7 @@ public class AuthorMapper {
         if (dto.getId() != null) domain.setId(dto.getId());
         if (dto.getFirstName() != null) domain.setFirstName(dto.getFirstName());
         if (dto.getLastName() != null) domain.setLastName(dto.getLastName());
-
+        if (dto.getGenre() != null) domain.setGenre(dto.getGenre());
         return domain;
     }
 }

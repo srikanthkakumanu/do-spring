@@ -24,4 +24,7 @@ public class AuthorDTO {
     @JsonProperty("lastName")
     private String lastName;
 
+    @JsonProperty("genre")
+    private String genre;
+
 }
