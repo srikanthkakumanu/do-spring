@@ -28,26 +28,26 @@ services:
       PMA_HOST: mariadb
       PMA_PORT: 3306
 
-  api:
-    build:
-      context: .
-      dockerfile: ./api/Dockerfile
-    image: srik1980/api:v1
-    ports:
-      - 9101:8080
-    depends_on:
-      - mariadb
-      - phpmyadmin
-    environment:
-      SPRING_PROFILES_ACTIVE: dev
-      SPRING_DATASOURCE_USERNAME: bookuser
-      SPRING_DATASOURCE_PASSWORD: bookuser
-      SPRING_JPA_HIBERNATE_DDL-AUTO: validate
-      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/bookdb?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
-      SPRING_FLYWAY_USER: bookadmin
-      SPRING_FLYWAY_PASSWORD: bookadmin
-      API-SERVICE-HOST: http://api:9101
-    restart: on-failure
+#  api:
+#    build:
+#      context: .
+#      dockerfile: ./api/Dockerfile
+#    image: srik1980/api:v1
+#    ports:
+#      - 9101:8080
+#    depends_on:
+#      - mariadb
+#      - phpmyadmin
+#    environment:
+#      SPRING_PROFILES_ACTIVE: dev
+#      SPRING_DATASOURCE_USERNAME: bookuser
+#      SPRING_DATASOURCE_PASSWORD: bookuser
+#      SPRING_JPA_HIBERNATE_DDL-AUTO: validate
+#      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/bookdb?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+#      SPRING_FLYWAY_USER: bookadmin
+#      SPRING_FLYWAY_PASSWORD: bookadmin
+#      API-SERVICE-HOST: http://api:9101
+#    restart: on-failure
 
   books-service:
     build:
@@ -70,47 +70,47 @@ services:
       BOOK-SERVICE-HOST: http://books-service:9102
     restart: on-failure
 
-  todo:
-    build:
-      context: .
-      dockerfile: ./todo-service/Dockerfile
-    image: srik1980/todo-service:v1
-    ports:
-      - 9103:8080
-    depends_on:
-      - mariadb
-      - phpmyadmin
-    environment:
-      SPRING_PROFILES_ACTIVE: dev
-      SPRING_DATASOURCE_USERNAME: bookuser
-      SPRING_DATASOURCE_PASSWORD: bookuser
-      SPRING_JPA_HIBERNATE_DDL-AUTO: validate
-      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/bookdb?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
-      SPRING_FLYWAY_USER: bookadmin
-      SPRING_FLYWAY_PASSWORD: bookadmin
-      TODO-SERVICE-HOST: http://todo-service:9103
-    restart: on-failure
-
-  videos:
-    build:
-      context: .
-      dockerfile: ./videos-service/Dockerfile
-    image: srik1980/videos-service:v1
-    ports:
-      - 9104:8080
-    depends_on:
-      - mariadb
-      - phpmyadmin
-    environment:
-      SPRING_PROFILES_ACTIVE: dev
-      SPRING_DATASOURCE_USERNAME: bookuser
-      SPRING_DATASOURCE_PASSWORD: bookuser
-      SPRING_JPA_HIBERNATE_DDL-AUTO: validate
-      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/bookdb?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
-      SPRING_FLYWAY_USER: bookadmin
-      SPRING_FLYWAY_PASSWORD: bookadmin
-      VIDEOS-SERVICE-HOST: http://videos-service:9104
-    restart: on-failure
+#  todo:
+#    build:
+#      context: .
+#      dockerfile: ./todo-service/Dockerfile
+#    image: srik1980/todo-service:v1
+#    ports:
+#      - 9103:8080
+#    depends_on:
+#      - mariadb
+#      - phpmyadmin
+#    environment:
+#      SPRING_PROFILES_ACTIVE: dev
+#      SPRING_DATASOURCE_USERNAME: bookuser
+#      SPRING_DATASOURCE_PASSWORD: bookuser
+#      SPRING_JPA_HIBERNATE_DDL-AUTO: validate
+#      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/bookdb?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+#      SPRING_FLYWAY_USER: bookadmin
+#      SPRING_FLYWAY_PASSWORD: bookadmin
+#      TODO-SERVICE-HOST: http://todo-service:9103
+#    restart: on-failure
+#
+#  videos:
+#    build:
+#      context: .
+#      dockerfile: ./videos-service/Dockerfile
+#    image: srik1980/videos-service:v1
+#    ports:
+#      - 9104:8080
+#    depends_on:
+#      - mariadb
+#      - phpmyadmin
+#    environment:
+#      SPRING_PROFILES_ACTIVE: dev
+#      SPRING_DATASOURCE_USERNAME: bookuser
+#      SPRING_DATASOURCE_PASSWORD: bookuser
+#      SPRING_JPA_HIBERNATE_DDL-AUTO: validate
+#      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/bookdb?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+#      SPRING_FLYWAY_USER: bookadmin
+#      SPRING_FLYWAY_PASSWORD: bookadmin
+#      VIDEOS-SERVICE-HOST: http://videos-service:9104
+#    restart: on-failure
 
 volumes:
   mariadb:

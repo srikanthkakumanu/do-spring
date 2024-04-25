@@ -17,7 +17,8 @@ public class BookMapper implements BaseMapper {
         if (domain.getTitle() != null) dto.setTitle(domain.getTitle());
         if (domain.getIsbn() != null) dto.setIsbn(domain.getIsbn());
         if (domain.getPublisher() != null) dto.setPublisher(domain.getPublisher());
-
+        if (domain.getCreated() != null) dto.setCreated(domain.getCreated());
+        if (domain.getAuthorId() != null) dto.setAuthorId(domain.getAuthorId());
         return dto;
     }
 
@@ -28,6 +29,7 @@ public class BookMapper implements BaseMapper {
         if (dto.getTitle() != null) domain.setTitle(dto.getTitle());
         if (dto.getIsbn() != null) domain.setIsbn(dto.getIsbn());
         if (dto.getPublisher() != null) domain.setPublisher(dto.getPublisher());
+        if (dto.getAuthorId() != null) domain.setAuthorId(dto.getAuthorId());
 
         return domain;
     }

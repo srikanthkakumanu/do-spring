@@ -27,4 +27,5 @@ plugins {
 
 
 rootProject.name = 'do-spring'
-include(':api:app', ":books-service:app", ":todo-service:app", ":videos-service:app")
+//include(':api:app', ":books-service:app", ":todo-service:app", ":videos-service:app")
+include(':books-service:app')

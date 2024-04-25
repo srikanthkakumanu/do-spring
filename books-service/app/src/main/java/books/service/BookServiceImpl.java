@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-public class BookServiceImpl implements CommonService<BookDTO> {
+public class BookServiceImpl implements BookService<BookDTO> {
 
     private final BookRepository repository;
     private final BaseMapper mapper;
@@ -29,10 +29,10 @@ public class BookServiceImpl implements CommonService<BookDTO> {
     @Override
     public BookDTO save(BookDTO dto) {
 
-        log.debug("Saving Book: " + dto.toString());
+        log.debug("Saving Book: {}", dto.toString());
         Book book = mapper.dtoToDomain(dto);
         Book saved = this.repository.save(book);
-        log.debug("Saved Book: " + saved.toString());
+        log.debug("Saved Book: {}", saved.toString());
 
         return mapper.domainToDto(saved);
     }
@@ -43,11 +43,12 @@ public class BookServiceImpl implements CommonService<BookDTO> {
         log.debug("Updating Book: {}", dto.toString());
         Book foundBook = repository.findById(dto.getId())
                                 .orElseThrow(() ->
-                                    new RuntimeException("Book Id: {} not found".formatted(dto.getId())));
+                                    new RuntimeException(String.format("Book Id: {} not found.", dto.getId())));
 
         if (dto.getTitle() != null) foundBook.setTitle(dto.getTitle());
         if(dto.getIsbn() != null) foundBook.setIsbn(dto.getIsbn());
         if(dto.getPublisher() != null) foundBook.setPublisher(dto.getPublisher());
+        if(dto.getAuthorId() != null) foundBook.setAuthorId(dto.getAuthorId());
 
         Book saved = this.repository.save(foundBook);
 
@@ -72,7 +73,7 @@ public class BookServiceImpl implements CommonService<BookDTO> {
     }
 
     @Override
-    public BookDTO findById(Long id) {
+    public BookDTO findById(UUID id) {
         return mapper.domainToDto(getBook(id));
     }
 
@@ -84,22 +85,44 @@ public class BookServiceImpl implements CommonService<BookDTO> {
                 .collect(Collectors.toList());
     }
 
-    public Iterable<BookDTO> findAllByTitle(String title) {
-        List<Book> allBooks = repository.findAllByTitle(title);
-        return allBooks.stream()
+    public Iterable<BookDTO> findByTitle(String title) {
+        List<Book> foundBooks = repository.findByTitle(title);
+        return foundBooks.stream()
                 .map(mapper::domainToDto)
                 .collect(Collectors.toList());
     }
 
-    private Book getBook(Long id) {
+    public Iterable<BookDTO> findByIsbn(String isbn) {
+        List<Book> foundBooks = repository.findByIsbn(isbn);
+        return foundBooks.stream()
+                .map(mapper::domainToDto)
+                .collect(Collectors.toList());
+    }
 
-        Book book = repository.findById(id)
+    public Iterable<BookDTO> findByPublisher(String publisher) {
+        List<Book> foundBooks = repository.findByPublisher(publisher);
+        return foundBooks.stream()
+                .map(mapper::domainToDto)
+                .collect(Collectors.toList());
+    }
+
+    public Iterable<BookDTO> findByAuthorId(UUID authorId) {
+        List<Book> foundBooks = repository.findByAuthorId(authorId);
+        return foundBooks.stream()
+                .map(mapper::domainToDto)
+                .collect(Collectors.toList());
+    }
+
+    private Book getBook(UUID id) {
+
+        return repository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                     "Book Not Found. Id: " + id));
 
-        if (Objects.nonNull(book))
-            return book;
-        else
-            throw new RuntimeException("Book {} not found ".formatted(id));
+
+//        if (Objects.nonNull(book))
+//            return book;
+//        else
+//            throw new RuntimeException("Book {} not found ".formatted(id));
     }
 }

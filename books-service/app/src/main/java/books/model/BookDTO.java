@@ -1,11 +1,13 @@
 package books.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -15,7 +17,7 @@ public class BookDTO {
 
 
     @JsonProperty("id")
-    private Long id;
+    private UUID id;
 
     @JsonProperty("title")
     private String title;
@@ -25,5 +27,11 @@ public class BookDTO {
 
     @JsonProperty("publisher")
     private String publisher;
+
+    @JsonProperty("created")
+    private LocalDateTime created;
+
+    @JsonProperty("authorId")
+    private UUID authorId;
 
 }

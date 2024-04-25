@@ -1,9 +1,9 @@
 package books.repository;
 
-import books.domain.AuthorUUID;
+import books.domain.Author;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
-public interface AuthorUUIDRepository extends JpaRepository<AuthorUUID, UUID> {
+public interface AuthorRepository extends JpaRepository<Author, UUID> {
 }

@@ -1,9 +1,17 @@
 #! /bin/bash
 
-USAGE_PROMPT="[./run.sh up|down|remove|restart]"
+USAGE_PROMPT="[./run.sh up|down|cleanup|remove|restart]"
 ARGS_COUNT=$#
-PROJECT_DIRS=("api" "books-service" "todo-service" "videos-service")
+#PROJECT_DIRS=("api" "books-service" "todo-service" "videos-service")
+PROJECT_DIRS=("books-service")
 ARTIFACTORY_PREFIX="srik1980"
+
+runDockerCompose() {
+  echo "Running Docker Compose script..."
+  docker compose up -d
+  echo "Containers are Up Now..."
+  return
+}
 
 up() {
   clear
@@ -11,10 +19,7 @@ up() {
   for dir_name in "${PROJECT_DIRS[@]}"; do
     [ -d "/$dir_name/app/build" ] && ./gradlew clean build || ./gradlew build
   done
-
-  echo "Running Docker Compose script..."
-  docker compose up -d
-  echo "Containers are Up Now..."
+  runDockerCompose
   return
 }
 
@@ -24,6 +29,13 @@ down() {
   docker compose down
   echo "Shutdown completed."
   return
+}
+
+cleanup() {
+    echo "Deleting Project build directories..."
+    ./gradlew clean build
+    runDockerCompose
+    return
 }
 
 remove() {
@@ -40,7 +52,7 @@ remove() {
 restart() {
   down
   remove
-  up
+  start
   return
 }
 
@@ -57,6 +69,9 @@ if [ "$1" = "up" ]; then
   exit 0
 elif [ "$1" = "down" ]; then
   down
+  exit 0
+elif [ "$1" = "cleanup" ]; then
+  cleanup
   exit 0
 elif [ "$1" = "remove" ]; then
   down
