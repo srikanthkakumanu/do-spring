@@ -3,9 +3,14 @@ package books.mapper;
 import books.domain.Book;
 import books.model.BookDTO;
 
-public interface BaseMapper {
+/**
+ * Transforms DTO to Domain and vise versa.
+ * @param <T> DTO object
+ * @param <D> Domain object
+ */
+public interface BaseMapper<T, D> {
 
-    public BookDTO domainToDto(Book domain);
-    public Book dtoToDomain(BookDTO dto);
+    public T domainToDto(D domain);
+    public D dtoToDomain(T dto);
 
 }

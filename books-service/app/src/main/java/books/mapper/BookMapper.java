@@ -2,13 +2,10 @@ package books.mapper;
 
 import books.domain.Book;
 import books.model.BookDTO;
-import lombok.extern.slf4j.Slf4j;
-import org.hibernate.annotations.Comment;
 import org.springframework.stereotype.Component;
 
-@Slf4j
 @Component
-public class BookMapper implements BaseMapper {
+public class BookMapper implements BaseMapper<BookDTO, Book> {
 
     @Override
     public BookDTO domainToDto(Book domain) {
@@ -33,4 +30,5 @@ public class BookMapper implements BaseMapper {
 
         return domain;
     }
+
 }

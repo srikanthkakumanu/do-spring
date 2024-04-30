@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class AuthorMapper {
+public class AuthorMapper implements BaseMapper<AuthorDTO, Author> {
 
     public AuthorDTO domainToDto(Author domain) {
         AuthorDTO dto = new AuthorDTO();

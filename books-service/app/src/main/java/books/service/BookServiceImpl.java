@@ -4,6 +4,7 @@ import books.domain.Book;
 import books.mapper.BaseMapper;
 import books.model.BookDTO;
 import books.repository.BookRepository;
+import books.util.ServiceUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,10 +19,10 @@ import java.util.stream.Collectors;
 public class BookServiceImpl implements BookService<BookDTO> {
 
     private final BookRepository repository;
-    private final BaseMapper mapper;
+    private final BaseMapper<BookDTO, Book> mapper;
 
     @Autowired
-    public BookServiceImpl(BookRepository repository, BaseMapper mapper) {
+    public BookServiceImpl(BookRepository repository, BaseMapper<BookDTO, Book> mapper) {
         this.repository = repository;
         this.mapper = mapper;
     }
@@ -80,37 +81,40 @@ public class BookServiceImpl implements BookService<BookDTO> {
     @Override
     public Iterable<BookDTO> findAll() {
         List<Book> allBooks = repository.findAll();
-        return allBooks.stream()
-                .map(mapper::domainToDto)
-                .collect(Collectors.toList());
+
+        return ServiceUtils.toDTOList(allBooks, mapper);
     }
 
     public Iterable<BookDTO> findByTitle(String title) {
-        List<Book> foundBooks = repository.findByTitle(title);
-        return foundBooks.stream()
-                .map(mapper::domainToDto)
-                .collect(Collectors.toList());
+        List<Book> found = repository.findByTitle(title)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Book Not Found. title: " + title));
+
+        return ServiceUtils.toDTOList(found, mapper);
     }
 
     public Iterable<BookDTO> findByIsbn(String isbn) {
-        List<Book> foundBooks = repository.findByIsbn(isbn);
-        return foundBooks.stream()
-                .map(mapper::domainToDto)
-                .collect(Collectors.toList());
+        List<Book> found = repository.findByIsbn(isbn)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Book Not Found. ISBN: " + isbn));
+
+        return ServiceUtils.toDTOList(found, mapper);
     }
 
     public Iterable<BookDTO> findByPublisher(String publisher) {
-        List<Book> foundBooks = repository.findByPublisher(publisher);
-        return foundBooks.stream()
-                .map(mapper::domainToDto)
-                .collect(Collectors.toList());
+        List<Book> found = repository.findByPublisher(publisher)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Book Not Found. publisher: " + publisher));
+
+        return ServiceUtils.toDTOList(found, mapper);
     }
 
     public Iterable<BookDTO> findByAuthorId(UUID authorId) {
-        List<Book> foundBooks = repository.findByAuthorId(authorId);
-        return foundBooks.stream()
-                .map(mapper::domainToDto)
-                .collect(Collectors.toList());
+        List<Book> found = repository.findByAuthorId(authorId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Book Not Found. AuthorId: " + authorId));
+
+        return ServiceUtils.toDTOList(found, mapper);
     }
 
     private Book getBook(UUID id) {

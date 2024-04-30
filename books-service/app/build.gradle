@@ -8,13 +8,17 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
-    id 'org.springframework.boot' version '3.2.4'
+    id 'org.springframework.boot' version '3.2.5'
     id 'io.spring.dependency-management' version '1.1.4'
     id "org.flywaydb.flyway" version "10.11.0"
 }
 
-group = 'books'
+group = 'books-service'
 version = '1.0'
+
+springBoot {
+    buildInfo()
+}
 
 ext {
     JAXB_API_VERSION = "4.0.2"
@@ -41,35 +45,24 @@ repositories {
 
 
 dependencies {
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation "org.springframework.boot:spring-boot-starter-data-jpa"
     implementation "org.springframework.boot:spring-boot-starter-web"
-//    implementation "jakarta.xml.bind:jakarta.xml.bind-api:${JAXB_API_VERSION}"
-//    implementation "org.glassfish.jaxb:jaxb-core:${JAXB_CORE_VERSION}"
-//    implementation "com.sun.xml.bind:jaxb-impl:${JAXB_CORE_VERSION}"
     implementation "jakarta.validation:jakarta.validation-api:${JAKARTA_VALIDATION_API_VERSION}"
     implementation "net.logstash.logback:logstash-logback-encoder:${LOGSTASH_LOGBACK_ENCODER_VERSION}"
-//    implementation "org.mapstruct:mapstruct:${MAPSTRUCT_VERSION}"
-//    implementation "org.flywaydb:flyway-core"
     implementation "org.flywaydb:flyway-mysql"
 
-
-//    implementation "org.flywaydb:flyway-core"
-//    implementation "org.flywaydb:flyway-mysql"
-//    implementation "org.liquibase:liquibase-core"
-
     compileOnly "org.projectlombok:lombok"
-
-//    developmentOnly "org.springframework.boot:spring-boot-docker-compose"
 
     testRuntimeOnly "com.h2database:h2"
     runtimeOnly "org.mariadb.jdbc:mariadb-java-client"
 
     annotationProcessor "org.projectlombok:lombok"
-//    annotationProcessor "org.mapstruct:mapstruct-processor:${MAPSTRUCT_VERSION}"
 
     testImplementation "org.springframework.boot:spring-boot-starter-test"
     testImplementation "org.assertj:assertj-core:${ASSERTJ_VERSION}"
-
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
