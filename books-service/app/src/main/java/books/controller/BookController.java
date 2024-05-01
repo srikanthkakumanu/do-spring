@@ -2,12 +2,10 @@ package books.controller;
 
 import books.model.BookDTO;
 import books.service.BookService;
-import books.service.CommonService;
-import books.validation.BookValidationError;
-import books.validation.builder.BookValidationErrorBuilder;
+import books.validation.DomainValidationError;
+import books.validation.builder.DomainValidationErrorBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
@@ -161,7 +159,7 @@ public class BookController {
         if (errors.hasErrors()) {
             return ResponseEntity
                     .badRequest()
-                    .body(BookValidationErrorBuilder
+                    .body(DomainValidationErrorBuilder
                             .fromBindingErrors(errors));
         }
 
@@ -184,7 +182,7 @@ public class BookController {
         if (errors.hasErrors()) {
             return ResponseEntity
                     .badRequest()
-                    .body(BookValidationErrorBuilder
+                    .body(DomainValidationErrorBuilder
                             .fromBindingErrors(errors));
         }
 
@@ -237,8 +235,8 @@ public class BookController {
 
     @ExceptionHandler
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public BookValidationError handleException(Exception exception
+    public DomainValidationError handleException(Exception exception
             /*DataAccessException exception*/) {
-        return new BookValidationError(exception.getMessage());
+        return new DomainValidationError(exception.getMessage());
     }
 }

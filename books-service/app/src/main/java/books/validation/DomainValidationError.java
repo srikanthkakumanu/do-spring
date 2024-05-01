@@ -7,14 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-public class BookValidationError {
+public class DomainValidationError {
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> errors = new ArrayList<>();
 
     private final String errorMessage;
 
-    public BookValidationError(String errorMessage) {
+    public DomainValidationError(String errorMessage) {
         this.errorMessage = errorMessage;
     }
 

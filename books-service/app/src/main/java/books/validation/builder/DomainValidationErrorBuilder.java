@@ -2,13 +2,13 @@ package books.validation.builder;
 
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
-import books.validation.BookValidationError;
+import books.validation.DomainValidationError;
 
-public class BookValidationErrorBuilder {
+public class DomainValidationErrorBuilder {
 
-    public static BookValidationError fromBindingErrors(Errors errors) {
-        BookValidationError error =
-                new BookValidationError(
+    public static DomainValidationError fromBindingErrors(Errors errors) {
+        DomainValidationError error =
+                new DomainValidationError(
                         "Validation failed. "
                                 + errors.getErrorCount()
                                 + " error(s)");
