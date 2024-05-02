@@ -15,11 +15,10 @@ public interface AuthorRepository extends JpaRepository<Author, UUID> {
     Optional<List<Author>> findByLastName(String lastName);
     Optional<List<Author>> findByGenre(String genre);
     Optional<List<Author>> findByFirstNameAndLastName(String firstName, String lastName);
-    //Optional<Author> findAuthorByFirstNameAndLastName(String firstName, String lastName);
 
-    Page<Author> findAuthorByFirstNameAndLastName(String firstName, String lastName, Pageable pageable);
-    Page<Author> findAuthorByFirstName(String firstName, Pageable pageable);
-    Page<Author> findAuthorByLastName(String lastName, Pageable pageable);
-    Page<Author> findAuthorByGenre(String genre, Pageable pageable);
+    Page<Author> findByFirstNameAndLastName(String firstName, String lastName, Pageable pageable);
+    Page<Author> findByFirstName(String firstName, Pageable pageable);
+    Page<Author> findByLastName(String lastName, Pageable pageable);
+    Page<Author> findByGenre(String genre, Pageable pageable);
 
 }

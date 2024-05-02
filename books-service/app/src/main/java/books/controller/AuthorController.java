@@ -34,43 +34,46 @@ public class AuthorController {
 
     @GetMapping("/author/{id}")
     public ResponseEntity<AuthorDTO> getAuthorById(@PathVariable UUID id) {
-        log.debug("Fetching Author: {}", id);
+        log.debug("Fetch Author[Id: {}]", id);
         return ResponseEntity.ok(service.findById(id));
     }
 
     @GetMapping("/author/firstName/{firstName}")
     public ResponseEntity<Iterable<AuthorDTO>> getAuthorsByFirstName(@PathVariable String firstName) {
-        log.debug("Fetch all authors by firstName");
+        log.debug("Fetch all authors by firstName: {}", firstName);
         return ResponseEntity.ok(service.findByFirstName(firstName));
     }
 
     @GetMapping("/author/lastName/{lastName}")
     public ResponseEntity<Iterable<AuthorDTO>> getAuthorsByLastName(@PathVariable String lastName) {
-        log.debug("Fetch all authors by lastName");
+        log.debug("Fetch all authors by lastName: {}", lastName);
         return ResponseEntity.ok(service.findByLastName(lastName));
     }
 
     @GetMapping("/author/{firstName}/{lastName}")
     public ResponseEntity<Iterable<AuthorDTO>> getAuthorsByFirstNameAndLastName
-            (@PathVariable String firstName, @PathVariable String lastName) {
-        log.debug("Fetch all authors by firstName and lastName");
+            (@PathVariable String firstName,
+             @PathVariable String lastName) {
+        log.debug("Fetch all authors by firstName: {}, lastName: {}", firstName, lastName);
         return ResponseEntity.ok(service.findByFirstNameAndLastName(firstName, lastName));
     }
 
     @GetMapping("/author/genre/{genre}")
-    public ResponseEntity<Iterable<AuthorDTO>> getAuthorsByGenre(@PathVariable String genre) {
-        log.debug("Fetch all authors by genre");
+    public ResponseEntity<Iterable<AuthorDTO>> getAuthorsByGenre
+            (@PathVariable String genre) {
+        log.debug("Fetch all authors by genre: {}", genre);
         return ResponseEntity.ok(service.findByGenre(genre));
     }
 
     @PatchMapping("/author/{id}/firstName")
     public ResponseEntity<AuthorDTO> setFirstName(@PathVariable UUID id,
                                                   @RequestBody String firstName) {
+        log.debug("Update Author[firstName: {}]", firstName);
         AuthorDTO found = service.findById(id);
         found.setFirstName(firstName);
         AuthorDTO result = service.update(found);
 
-        log.debug("Author firstName Updated : {}", result.toString());
+        log.debug("Author {} Updated.", result.toString());
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -86,11 +89,12 @@ public class AuthorController {
     @PatchMapping("/author/{id}/lastName")
     public ResponseEntity<AuthorDTO> setLastName(@PathVariable UUID id,
                                                  @RequestBody String lastName) {
+        log.debug("Update Author[lastName: {}]", lastName);
         AuthorDTO found = service.findById(id);
         found.setLastName(lastName);
         AuthorDTO result = service.update(found);
 
-        log.debug("Author lastName Updated : {}", result.toString());
+        log.debug("Author {} Updated.", result.toString());
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -106,11 +110,12 @@ public class AuthorController {
     @PatchMapping("/author/{id}/genre")
     public ResponseEntity<AuthorDTO> setGenre(@PathVariable UUID id,
                                               @RequestBody String genre) {
+        log.debug("Update Author[genre: {}]", genre);
         AuthorDTO found = service.findById(id);
         found.setGenre(genre);
         AuthorDTO result = service.update(found);
 
-        log.debug("Author genre Updated : {}", result.toString());
+        log.debug("Author {} Updated.", result.toString());
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -136,7 +141,7 @@ public class AuthorController {
     public ResponseEntity<?> createAuthor(
             @Valid @RequestBody AuthorDTO author,
             Errors errors) {
-
+        log.debug("Save Author: {}", author.toString());
         if (errors.hasErrors()) {
             return ResponseEntity
                     .badRequest()
@@ -159,7 +164,7 @@ public class AuthorController {
     public ResponseEntity<?> updateAuthor(
             @Valid @RequestBody AuthorDTO author,
             Errors errors) {
-
+        log.debug("Update Author: {}", author.toString());
         if (errors.hasErrors()) {
             return ResponseEntity
                     .badRequest()
@@ -180,6 +185,7 @@ public class AuthorController {
 
     @DeleteMapping("/author/{id}")
     public ResponseEntity<AuthorDTO> deleteAuthor(@PathVariable UUID id) {
+        log.debug("Delete Author: {}", id.toString());
         service.delete(AuthorDTO.builder().id(id).build());
 
         log.debug("Author Deleted : {}", id);
@@ -189,10 +195,9 @@ public class AuthorController {
 
     @DeleteMapping("/author")
     public ResponseEntity<AuthorDTO> deleteAuthor(@RequestBody AuthorDTO author) {
-
+        log.debug("Delete Author: {}", author.toString());
         service.delete(author);
-
-        log.debug("Author Deleted : {}", author.toString());
+        log.debug("Author Deleted : {}", author);
 
         return ResponseEntity.noContent().build();
     }

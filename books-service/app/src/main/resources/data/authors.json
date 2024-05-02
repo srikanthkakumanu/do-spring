@@ -164,6 +164,76 @@
       "first_name": "Finn",
       "last_name": "Hudson",
       "genre": "Post-Apocalyptic"
+    },
+    {
+      "first_name": "Linus",
+      "last_name": "Torvalds",
+      "genre": "Technology"
+    },
+    {
+      "first_name": "Guido",
+      "last_name": "van Rossum",
+      "genre": "Technology"
+    },
+    {
+      "first_name": "Martin",
+      "last_name": "Odersky",
+      "genre": "Technology"
+    },
+    {
+      "first_name": "James",
+      "last_name": "Gosling",
+      "genre": "Technology"
+    },
+    {
+      "first_name": "Bjarne",
+      "last_name": "Stroustrup",
+      "genre": "Technology"
+    },
+    {
+      "first_name": "Dennis",
+      "last_name": "Ritchie",
+      "genre": "Technology"
+    },
+    {
+      "first_name": "Tim",
+      "last_name": "Berners-Lee",
+      "genre": "Technology"
+    },
+    {
+      "first_name": "Josh",
+      "last_name": "Long",
+      "genre": "Technology"
+    },
+    {
+      "first_name": "Rasmus",
+      "last_name": "Lerdorf",
+      "genre": "Technology"
+    },
+    {
+      "first_name": "Ward",
+      "last_name": "Cunningham",
+      "genre": "Technology"
+    },
+    {
+      "first_name": "Dan",
+      "last_name": "Vega",
+      "genre": "Technology"
+    },
+    {
+      "first_name": "Anton",
+      "last_name": "Putra",
+      "genre": "Technology"
+    },
+    {
+      "first_name": "Larry",
+      "last_name": "Wall",
+      "genre": "Technology"
+    },
+    {
+      "first_name": "Ken",
+      "last_name": "Thompson",
+      "genre": "Technology"
     }
   ]
 }

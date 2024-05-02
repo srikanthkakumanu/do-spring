@@ -11,11 +11,20 @@ public interface AuthorService<T> extends CommonService<T> {
     public Iterable<T> findByFirstNameAndLastName(String firstName, String lastName);
     public Iterable<T> findByGenre(String genre);
 
-    Iterable<T> findAuthorsByFirstNameAndLastName(String firstName, String lastName, int pageNum, int pageSize);
+    Iterable<T> findByFirstNameAndLastName(String firstName,
+                                                  String lastName,
+                                                  int pageNum,
+                                                  int pageSize);
 
-    Iterable<T> findAuthorsByFirstName(String firstName, int pageNum, int pageSize);
+    Iterable<T> findByFirstName(String firstName,
+                                       int pageNum,
+                                       int pageSize);
 
-    Iterable<T> findAuthorsByLastName(String lastName, int pageNum, int pageSize);
+    Iterable<T> findByLastName(String lastName,
+                                      int pageNum,
+                                      int pageSize);
 
-    Iterable<T> findAuthorsByGenre(String genre, int pageNum, int pageSize);
+    Iterable<T> findByGenre(String genre,
+                                   int pageNum,
+                                   int pageSize);
 }

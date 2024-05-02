@@ -43,10 +43,10 @@ public class AuthorServiceImpl implements AuthorService<AuthorDTO> {
 
     @Override
     public AuthorDTO update(AuthorDTO dto) {
-        log.debug("Updating Author: {}", dto.toString());
+        log.debug("Update Author: {}", dto.toString());
         Author found = repository.findById(dto.getId())
                 .orElseThrow(() ->
-                        new RuntimeException(String.format("Author Id: {} not found.", dto.getId())));
+                        new RuntimeException("Author Id: %s not found.".formatted(dto.getId())));
 
         if (dto.getFirstName() != null) found.setFirstName(dto.getFirstName());
         if(dto.getLastName() != null) found.setLastName(dto.getLastName());
@@ -61,7 +61,7 @@ public class AuthorServiceImpl implements AuthorService<AuthorDTO> {
 
     @Override
     public Iterable<AuthorDTO> save(Collection<AuthorDTO> dtos) {
-        log.debug("Saving Authors");
+        log.debug("Save Authors");
 
         return dtos.stream()
                 .map(this::save)
@@ -70,9 +70,16 @@ public class AuthorServiceImpl implements AuthorService<AuthorDTO> {
 
     @Override
     public void delete(AuthorDTO dto) {
-        log.debug("Deleting Author: {}", dto.toString());
+        log.debug("Delete Author: {}", dto.toString());
 
         this.repository.delete(mapper.dtoToDomain(dto));
+    }
+
+    @Override
+    public Iterable<AuthorDTO> findAll() {
+        log.debug("Get all authors ");
+        List<Author> allAuthors = repository.findAll();
+        return ServiceUtils.toDTOList(allAuthors, mapper);
     }
 
     @Override
@@ -81,18 +88,14 @@ public class AuthorServiceImpl implements AuthorService<AuthorDTO> {
     }
 
     @Override
-    public Iterable<AuthorDTO> findAll() {
-        List<Author> allAuthors = repository.findAll();
-        return ServiceUtils.toDTOList(allAuthors, mapper);
-    }
-
-    @Override
     public Iterable<AuthorDTO> findByFirstNameAndLastName(String firstName, String lastName) {
+        log.debug("Get all authors by firstName: {} and lastName: {}", firstName, lastName);
+
         List<Author> found =
                 repository.findByFirstNameAndLastName(firstName, lastName)
                         .orElseThrow(() ->
                                 new ResponseStatusException(HttpStatus.NOT_FOUND,
-                                        "Author Not Found. firstName: {}, lastName: {}"
+                                        "Author[firstName: %s, lastName: %s] Not Found. "
                                                 .formatted(firstName, lastName)));
 
         return ServiceUtils.toDTOList(found, mapper);
@@ -100,104 +103,133 @@ public class AuthorServiceImpl implements AuthorService<AuthorDTO> {
 
     @Override
     public Iterable<AuthorDTO> findByFirstName(String firstName) {
+        log.debug("Get all authors by firstName: {}", firstName);
 
         List<Author> found = repository.findByFirstName(firstName)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Author Not Found. firstName: " + firstName));
+                        "Author[firstName: %s] Not Found.".formatted(firstName)));
 
         return ServiceUtils.toDTOList(found, mapper);
     }
 
     @Override
     public Iterable<AuthorDTO> findByLastName(String lastName) {
+        log.debug("Get all authors by lastName: {}", lastName);
         List<Author> found = repository.findByLastName(lastName)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Author Not Found. lastName: " + lastName));
+                .orElseThrow(() ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Author[lastName: %s] Not Found.".formatted(lastName)));
 
         return ServiceUtils.toDTOList(found, mapper);
     }
 
     @Override
     public Iterable<AuthorDTO> findByGenre(String genre) {
+        log.debug("Get all authors by genre: {}", genre);
+
         List<Author> found = repository.findByGenre(genre)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Author Not Found. genre: " + genre));
+                        "Author[genre: %s] Not Found.".formatted(genre)));
 
         return ServiceUtils.toDTOList(found, mapper);
     }
 
     @Override
-    public Iterable<AuthorDTO> findAuthorsByFirstNameAndLastName(String firstName,
+    public Iterable<AuthorDTO> findByFirstNameAndLastName(String firstName,
                                                                 String lastName,
                                                                 int pageNum,
                                                                 int pageSize) {
+
+        log.debug("Get all authors by " +
+                "firstName: {}, lastName: {}" +
+                "pageNum: {}, pageSize: {}",
+                firstName, lastName, pageNum, pageSize);
+
         List<Author> found =
-                repository.findAuthorByFirstNameAndLastName(firstName,
+                repository.findByFirstNameAndLastName(firstName,
                                 lastName,
                                 PageRequest.of(pageNum, pageSize)).toList();
 
-        if (found.isEmpty())
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,
-                    "Author Not Found. firstName: {}, lastName: {}"
-                            .format(firstName, lastName));
+//        if (found.isEmpty())
+//            throw new ResponseStatusException(
+//                    HttpStatus.NOT_FOUND,
+//                    "Author[firstName: %s, lastName: %s] Not Found."
+//                            .formatted(firstName, lastName));
 
         return ServiceUtils.toDTOList(found, mapper);
     }
 
     @Override
-    public Iterable<AuthorDTO> findAuthorsByFirstName(String firstName,
+    public Iterable<AuthorDTO> findByFirstName(String firstName,
                                                      int pageNum,
                                                      int pageSize) {
+
+        log.debug("Get all authors by " +
+                        "firstName: {}" +
+                        "pageNum: {}, pageSize: {}",
+                firstName, pageNum, pageSize);
+
         List<Author> found =
-                repository.findAuthorByFirstName(firstName,
+                repository.findByFirstName(firstName,
                         PageRequest.of(pageNum, pageSize)).toList();
 
-        if (found.isEmpty())
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,
-                    "Author Not Found. firstName: {}" + firstName);
+//        if (found.isEmpty())
+//            throw new ResponseStatusException(
+//                    HttpStatus.NOT_FOUND,
+//                    "Author[firstName: %s] Not Found.".formatted(firstName));
 
         return ServiceUtils.toDTOList(found, mapper);
     }
 
     @Override
-    public Iterable<AuthorDTO> findAuthorsByLastName(String lastName,
+    public Iterable<AuthorDTO> findByLastName(String lastName,
                                                     int pageNum,
                                                     int pageSize) {
+
+        log.debug("Get all authors by " +
+                        "lastName: {}" +
+                        "pageNum: {}, pageSize: {}",
+                lastName, pageNum, pageSize);
+
         List<Author> found =
-                repository.findAuthorByLastName(lastName,
+                repository.findByLastName(lastName,
                         PageRequest.of(pageNum, pageSize)).toList();
 
-        if (found.isEmpty())
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,
-                    "Author Not Found. lastName: {}" + lastName);
+//        if (found.isEmpty())
+//            throw new ResponseStatusException(
+//                    HttpStatus.NOT_FOUND,
+//                    "Author[lastName: %s] Not Found.".formatted(lastName));
 
         return ServiceUtils.toDTOList(found, mapper);
     }
 
     @Override
-    public Iterable<AuthorDTO> findAuthorsByGenre(String genre,
+    public Iterable<AuthorDTO> findByGenre(String genre,
                                                  int pageNum,
                                                  int pageSize) {
+
+        log.debug("Get all authors by " +
+                        "genre: {}" +
+                        "pageNum: {}, pageSize: {}",
+                genre, pageNum, pageSize);
+
         List<Author> found =
-                repository.findAuthorByGenre(genre,
+                repository.findByGenre(genre,
                         PageRequest.of(pageNum, pageSize)).toList();
 
-        if (found.isEmpty())
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,
-                    "Author Not Found. Genre: {}" + genre);
+//        if (found.isEmpty())
+//            throw new ResponseStatusException(
+//                    HttpStatus.NOT_FOUND,
+//                    "Author[genre: %s] Not Found.".formatted(genre));
 
         return ServiceUtils.toDTOList(found, mapper);
-
     }
 
     private Author getAuthor(UUID id) {
+        log.debug("Author[Id: %s] Not Found.".formatted(id));
 
         return repository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Author Not Found. Id: " + id));
+                        "Author[Id: %s] Not Found.".formatted(id)));
     }
 }
