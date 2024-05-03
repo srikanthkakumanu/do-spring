@@ -29,32 +29,16 @@ public class BookServiceImpl implements BookService<BookDTO> {
 
     @Override
     public BookDTO save(BookDTO dto) {
+        log.debug("Save Book: {}", dto.toString());
 
-        log.debug("Saving Book: {}", dto.toString());
-        Book book = mapper.dtoToDomain(dto);
-        Book saved = this.repository.save(book);
+        Book found = (Objects.nonNull(dto.getId()))
+                            ? repository.findById(dto.getId())
+                                        .orElse(new Book())
+                            : new Book();
+
+        Book merged = mapper.dtoToDomain(dto, found);
+        Book saved = this.repository.save(merged);
         log.debug("Saved Book: {}", saved.toString());
-
-        return mapper.domainToDto(saved);
-    }
-
-    @Override
-    public BookDTO update(BookDTO dto) {
-
-        log.debug("Updating Book: {}", dto.toString());
-        Book foundBook = repository.findById(dto.getId())
-                                .orElseThrow(() ->
-                                    new RuntimeException(String.format("Book Id: {} not found.", dto.getId())));
-
-        if (dto.getTitle() != null) foundBook.setTitle(dto.getTitle());
-        if(dto.getIsbn() != null) foundBook.setIsbn(dto.getIsbn());
-        if(dto.getPublisher() != null) foundBook.setPublisher(dto.getPublisher());
-        if(dto.getAuthorId() != null) foundBook.setAuthorId(dto.getAuthorId());
-
-        Book saved = this.repository.save(foundBook);
-
-        log.debug("Book updated: {}", saved.toString());
-
         return mapper.domainToDto(saved);
     }
 

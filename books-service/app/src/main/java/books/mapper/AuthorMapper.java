@@ -28,4 +28,12 @@ public class AuthorMapper implements BaseMapper<AuthorDTO, Author> {
         if (dto.getGenre() != null) domain.setGenre(dto.getGenre());
         return domain;
     }
+
+    public Author dtoToDomain(AuthorDTO dto, Author domain) {
+        if (dto.getId() != null) domain.setId(dto.getId());
+        if (dto.getFirstName() != null) domain.setFirstName(dto.getFirstName());
+        if (dto.getLastName() != null) domain.setLastName(dto.getLastName());
+        if (dto.getGenre() != null) domain.setGenre(dto.getGenre());
+        return domain;
+    }
 }

@@ -69,7 +69,7 @@ public class BookController {
     public ResponseEntity<BookDTO> setTitle(@PathVariable UUID id, @RequestBody String title) {
         BookDTO findBook = service.findById(id);
         findBook.setTitle(title);
-        BookDTO result = service.update(findBook);
+        BookDTO result = service.save(findBook);
 
         log.debug("Book Title Updated : {}", result.toString());
 
@@ -88,7 +88,7 @@ public class BookController {
     public ResponseEntity<BookDTO> setIsbn(@PathVariable UUID id, @RequestBody String isbn) {
         BookDTO findBook = service.findById(id);
         findBook.setIsbn(isbn);
-        BookDTO result = service.update(findBook);
+        BookDTO result = service.save(findBook);
 
         log.debug("Book ISBN Updated : {}", result.toString());
 
@@ -107,7 +107,7 @@ public class BookController {
     public ResponseEntity<BookDTO> setPublisher(@PathVariable UUID id, @RequestBody String publisher) {
         BookDTO findBook = service.findById(id);
         findBook.setPublisher(publisher);
-        BookDTO result = service.update(findBook);
+        BookDTO result = service.save(findBook);
 
         log.debug("Book Publisher Updated : {}", result.toString());
 
@@ -126,7 +126,7 @@ public class BookController {
     public ResponseEntity<BookDTO> setAuthorId(@PathVariable UUID id, @RequestBody UUID authorId) {
         BookDTO findBook = service.findById(id);
         findBook.setAuthorId(authorId);
-        BookDTO result = service.update(findBook);
+        BookDTO result = service.save(findBook);
 
         log.debug("Book Author ID Updated : {}", result.toString());
 
@@ -151,7 +151,8 @@ public class BookController {
      * @param errors errorMap
      * @return JSON Response Entity
      */
-    @PostMapping("/book")
+    @RequestMapping(value="/book",
+            method = {RequestMethod.POST,RequestMethod.PUT})
     public ResponseEntity<?> createBook(
             @Valid @RequestBody BookDTO book,
             Errors errors) {
@@ -166,29 +167,6 @@ public class BookController {
         BookDTO result = service.save(book);
 
         log.debug("Book Saved : {}", result.toString());
-
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(result.getId()).toUri();
-        return ResponseEntity.created(location).build();
-    }
-
-    @PutMapping("/book")
-    public ResponseEntity<?> updateBook(
-            @Valid @RequestBody BookDTO book,
-            Errors errors) {
-
-        if (errors.hasErrors()) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(DomainValidationErrorBuilder
-                            .fromBindingErrors(errors));
-        }
-
-        BookDTO result = service.update(book);
-
-        log.debug("Book updated : {}", result.toString());
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()

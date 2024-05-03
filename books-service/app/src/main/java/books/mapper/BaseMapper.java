@@ -12,5 +12,5 @@ public interface BaseMapper<T, D> {
 
     public T domainToDto(D domain);
     public D dtoToDomain(T dto);
-
+    public D dtoToDomain(T dto, D domain);
 }

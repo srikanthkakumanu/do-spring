@@ -71,7 +71,7 @@ public class AuthorController {
         log.debug("Update Author[firstName: {}]", firstName);
         AuthorDTO found = service.findById(id);
         found.setFirstName(firstName);
-        AuthorDTO result = service.update(found);
+        AuthorDTO result = service.save(found);
 
         log.debug("Author {} Updated.", result.toString());
 
@@ -92,7 +92,7 @@ public class AuthorController {
         log.debug("Update Author[lastName: {}]", lastName);
         AuthorDTO found = service.findById(id);
         found.setLastName(lastName);
-        AuthorDTO result = service.update(found);
+        AuthorDTO result = service.save(found);
 
         log.debug("Author {} Updated.", result.toString());
 
@@ -113,7 +113,7 @@ public class AuthorController {
         log.debug("Update Author[genre: {}]", genre);
         AuthorDTO found = service.findById(id);
         found.setGenre(genre);
-        AuthorDTO result = service.update(found);
+        AuthorDTO result = service.save(found);
 
         log.debug("Author {} Updated.", result.toString());
 
@@ -137,8 +137,9 @@ public class AuthorController {
      * @param errors errorMap
      * @return JSON Response Entity
      */
-    @PostMapping("/author")
-    public ResponseEntity<?> createAuthor(
+    @RequestMapping(value="/author",
+            method = {RequestMethod.POST,RequestMethod.PUT})
+    public ResponseEntity<?> saveAuthor(
             @Valid @RequestBody AuthorDTO author,
             Errors errors) {
         log.debug("Save Author: {}", author.toString());
@@ -152,29 +153,6 @@ public class AuthorController {
         AuthorDTO result = service.save(author);
 
         log.debug("Author Saved : {}", result.toString());
-
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(result.getId()).toUri();
-        return ResponseEntity.created(location).build();
-    }
-
-    @PutMapping("/author")
-    public ResponseEntity<?> updateAuthor(
-            @Valid @RequestBody AuthorDTO author,
-            Errors errors) {
-        log.debug("Update Author: {}", author.toString());
-        if (errors.hasErrors()) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(DomainValidationErrorBuilder
-                            .fromBindingErrors(errors));
-        }
-
-        AuthorDTO result = service.update(author);
-
-        log.debug("Author updated : {}", result.toString());
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()

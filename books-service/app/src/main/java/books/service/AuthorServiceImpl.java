@@ -15,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -31,31 +32,17 @@ public class AuthorServiceImpl implements AuthorService<AuthorDTO> {
         this.mapper = mapper;
     }
 
-    @Override
     public AuthorDTO save(AuthorDTO dto) {
-        log.debug("Saving Author: {}", dto.toString());
-        Author author = mapper.dtoToDomain(dto);
-        Author saved = this.repository.save(author);
-        log.debug("Saved Author: {}", saved.toString());
+        log.debug("Save Author: {}", dto.toString());
 
-        return mapper.domainToDto(saved);
-    }
+        Author found = (Objects.nonNull(dto.getId()))
+                            ? repository.findById(dto.getId())
+                                        .orElse(new Author())
+                            : new Author();
 
-    @Override
-    public AuthorDTO update(AuthorDTO dto) {
-        log.debug("Update Author: {}", dto.toString());
-        Author found = repository.findById(dto.getId())
-                .orElseThrow(() ->
-                        new RuntimeException("Author Id: %s not found.".formatted(dto.getId())));
-
-        if (dto.getFirstName() != null) found.setFirstName(dto.getFirstName());
-        if(dto.getLastName() != null) found.setLastName(dto.getLastName());
-        if(dto.getGenre() != null) found.setGenre(dto.getGenre());
-
-        Author saved = this.repository.save(found);
-
-        log.debug("Author updated: {}", saved.toString());
-
+        Author merged = mapper.dtoToDomain(dto, found);
+        Author saved = this.repository.save(merged);
+        log.debug("Saved Author: {}", saved);
         return mapper.domainToDto(saved);
     }
 

@@ -33,7 +33,7 @@ public class AuthorsDataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
+        log.debug("Loading Authors Data..");
         List<Author> authors = new CopyOnWriteArrayList<>();
         JsonNode json;
 
@@ -49,6 +49,7 @@ public class AuthorsDataInitializer implements CommandLineRunner {
         }
 
         authorRepository.saveAll(authors);
+        log.debug("Loaded Authors Data.");
     }
 
     private Author createAuthorFromNode(JsonNode edge) {

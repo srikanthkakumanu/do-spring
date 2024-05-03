@@ -39,6 +39,7 @@ public class BooksDataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        log.debug("Loading Books Data..");
         List<Author> allAuthors = new CopyOnWriteArrayList<>();
         List<Book> allBooks = new CopyOnWriteArrayList<>();
         JsonNode json;
@@ -62,7 +63,7 @@ public class BooksDataInitializer implements CommandLineRunner {
         }
 
         bookRepository.saveAll(allBooks);
-
+        log.debug("Loaded Books Data.");
     }
 
 
