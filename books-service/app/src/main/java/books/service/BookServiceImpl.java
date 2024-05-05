@@ -54,7 +54,7 @@ public class BookServiceImpl implements BookService<BookDTO> {
 
         log.debug("Deleting Book: {}", dto.toString());
 
-        this.repository.delete(mapper.dtoToDomain(dto));
+        this.repository.delete(mapper.dtoToDomain(dto, new Book()));
     }
 
     @Override

@@ -20,17 +20,6 @@ public class BookMapper implements BaseMapper<BookDTO, Book> {
     }
 
     @Override
-    public Book dtoToDomain(BookDTO dto) {
-        Book domain = new Book();
-        if (dto.getId() != null) domain.setId(dto.getId());
-        if (dto.getTitle() != null) domain.setTitle(dto.getTitle());
-        if (dto.getIsbn() != null) domain.setIsbn(dto.getIsbn());
-        if (dto.getPublisher() != null) domain.setPublisher(dto.getPublisher());
-        if (dto.getAuthorId() != null) domain.setAuthorId(dto.getAuthorId());
-        return domain;
-    }
-
-    @Override
     public Book dtoToDomain(BookDTO dto, Book domain) {
         if (dto.getId() != null) domain.setId(dto.getId());
         if (dto.getTitle() != null) domain.setTitle(dto.getTitle());

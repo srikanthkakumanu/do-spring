@@ -59,7 +59,7 @@ public class AuthorServiceImpl implements AuthorService<AuthorDTO> {
     public void delete(AuthorDTO dto) {
         log.debug("Delete Author: {}", dto.toString());
 
-        this.repository.delete(mapper.dtoToDomain(dto));
+        this.repository.delete(mapper.dtoToDomain(dto, new Author()));
     }
 
     @Override
