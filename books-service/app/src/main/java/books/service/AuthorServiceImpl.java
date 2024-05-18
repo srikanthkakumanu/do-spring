@@ -122,6 +122,13 @@ public class AuthorServiceImpl implements AuthorService<AuthorDTO> {
     }
 
     @Override
+    public Iterable<AuthorDTO> findAll(Pageable pageable) {
+        log.debug("Get all authors by Page(pageNum: {}, pageSize: {})", pageable.getPageNumber(), pageable.getPageSize());
+        List<Author> allAuthors = repository.findAll(pageable).toList();
+        return ServiceUtils.toDTOList(allAuthors, mapper);
+    }
+
+    @Override
     public Iterable<AuthorDTO> findByFirstNameAndLastName(String firstName,
                                                                 String lastName,
                                                                 int pageNum,

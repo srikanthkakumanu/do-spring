@@ -5,7 +5,7 @@ import books.model.BookDTO;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BookMapper implements BaseMapper<BookDTO, Book> {
+public final class BookMapper implements BaseMapper<BookDTO, Book> {
 
     @Override
     public BookDTO domainToDto(Book domain) {

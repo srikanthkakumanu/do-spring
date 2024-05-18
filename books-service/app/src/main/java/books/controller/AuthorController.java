@@ -1,11 +1,16 @@
 package books.controller;
 
 import books.model.AuthorDTO;
+import books.model.Sort;
 import books.service.AuthorService;
 import books.validation.DomainValidationError;
 import books.validation.builder.DomainValidationErrorBuilder;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
@@ -13,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Collections;
+import java.util.Map;
 import java.util.UUID;
 
 @Slf4j
@@ -27,9 +34,21 @@ public class AuthorController {
     }
 
     @GetMapping("/authors")
-    public ResponseEntity<Iterable<AuthorDTO>> getAuthors() {
-        log.debug("Fetch all Authors");
-        return ResponseEntity.ok(service.findAll());
+    public ResponseEntity<Iterable<AuthorDTO>> getAuthors(
+            @RequestParam(defaultValue = "0", required = false) Integer pageNumber,
+            @RequestParam(defaultValue = "0", required = false) Integer pageSize,
+            @RequestParam(defaultValue = "false") Boolean paged) {
+
+        log.debug("Fetch all Authors - [pageNumber: {}, pageSize: {}, paged: {}]", pageNumber, pageSize, paged);
+
+        Iterable<AuthorDTO> result;
+
+        if (!paged)
+            result = service.findAll();
+        else
+            result = service.findAll(PageRequest.of(pageNumber, pageSize));
+
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/author/{id}")

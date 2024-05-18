@@ -8,7 +8,7 @@ import books.model.BookDTO;
  * @param <T> DTO object
  * @param <D> Domain object
  */
-public interface BaseMapper<T, D> {
+sealed public interface BaseMapper<T, D> permits AuthorMapper, BookMapper {
 
     public T domainToDto(D domain);
     public D dtoToDomain(T dto, D domain);

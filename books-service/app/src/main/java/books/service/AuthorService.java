@@ -3,6 +3,7 @@ package books.service;
 import books.domain.Author;
 import books.model.AuthorDTO;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface AuthorService<T> extends CommonService<T> {
 
@@ -11,6 +12,7 @@ public interface AuthorService<T> extends CommonService<T> {
     public Iterable<T> findByFirstNameAndLastName(String firstName, String lastName);
     public Iterable<T> findByGenre(String genre);
 
+    public Iterable<T> findAll(Pageable pageable);
     Iterable<T> findByFirstNameAndLastName(String firstName,
                                                   String lastName,
                                                   int pageNum,
