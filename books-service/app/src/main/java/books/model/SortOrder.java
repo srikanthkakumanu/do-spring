@@ -1,6 +1,6 @@
 package books.model;
 
-public enum Sort {
+public enum SortOrder {
     ASC,
     DSC
 }

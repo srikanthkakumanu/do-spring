@@ -1,16 +1,12 @@
 package books.controller;
 
 import books.model.AuthorDTO;
-import books.model.Sort;
+import books.model.SortOrder;
 import books.service.AuthorService;
 import books.validation.DomainValidationError;
 import books.validation.builder.DomainValidationErrorBuilder;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
@@ -18,8 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.Collections;
-import java.util.Map;
 import java.util.UUID;
 
 @Slf4j
@@ -41,14 +35,9 @@ public class AuthorController {
 
         log.debug("Fetch all Authors - [pageNumber: {}, pageSize: {}, paged: {}]", pageNumber, pageSize, paged);
 
-        Iterable<AuthorDTO> result;
-
-        if (!paged)
-            result = service.findAll();
-        else
-            result = service.findAll(PageRequest.of(pageNumber, pageSize));
-
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok((!paged)
+                ? service.findAll()
+                : service.findAll(pageNumber, pageSize));
     }
 
     @GetMapping("/author/{id}")
@@ -58,15 +47,36 @@ public class AuthorController {
     }
 
     @GetMapping("/author/firstName/{firstName}")
-    public ResponseEntity<Iterable<AuthorDTO>> getAuthorsByFirstName(@PathVariable String firstName) {
-        log.debug("Fetch all authors by firstName: {}", firstName);
-        return ResponseEntity.ok(service.findByFirstName(firstName));
+    public ResponseEntity<Iterable<AuthorDTO>> getAuthorsByFirstName(
+            @PathVariable String firstName,
+            @RequestParam(defaultValue = "0", required = false) Integer pageNumber,
+            @RequestParam(defaultValue = "0", required = false) Integer pageSize,
+            @RequestParam(defaultValue = "false") Boolean paged,
+            @RequestParam(defaultValue = "false") Boolean sorted,
+            @RequestParam(defaultValue = "ASC") SortOrder sortOrder) {
+
+        log.debug("Fetch all Authors - [firstName: {}, pageNumber: {}, pageSize: {}, paged: {}, sorted: {}, sortOrder: {}]", firstName, pageNumber, pageSize, paged, sorted, sortOrder);
+
+        return ResponseEntity.ok((!paged)
+                ? service.findByFirstName(firstName)
+                : service.findByFirstName(firstName, pageNumber, pageSize, sorted, sortOrder));
     }
 
     @GetMapping("/author/lastName/{lastName}")
-    public ResponseEntity<Iterable<AuthorDTO>> getAuthorsByLastName(@PathVariable String lastName) {
-        log.debug("Fetch all authors by lastName: {}", lastName);
-        return ResponseEntity.ok(service.findByLastName(lastName));
+    public ResponseEntity<Iterable<AuthorDTO>> getAuthorsByLastName(
+            @PathVariable String lastName,
+            @RequestParam(defaultValue = "0", required = false) Integer pageNumber,
+            @RequestParam(defaultValue = "0", required = false) Integer pageSize,
+            @RequestParam(defaultValue = "false") Boolean paged,
+            @RequestParam(defaultValue = "false") Boolean sorted,
+            @RequestParam(defaultValue = "ASC") SortOrder sortOrder) {
+
+
+        log.debug("Fetch all Authors - [lastName: {}, pageNumber: {}, pageSize: {}, paged: {}, sorted: {}, sortOrder: {}]", lastName, pageNumber, pageSize, paged, sorted, sortOrder);
+
+        return ResponseEntity.ok((!paged)
+                ? service.findByLastName(lastName)
+                : service.findByLastName(lastName, pageNumber, pageSize, sorted, sortOrder));
     }
 
     @GetMapping("/author/{firstName}/{lastName}")
@@ -79,9 +89,18 @@ public class AuthorController {
 
     @GetMapping("/author/genre/{genre}")
     public ResponseEntity<Iterable<AuthorDTO>> getAuthorsByGenre
-            (@PathVariable String genre) {
-        log.debug("Fetch all authors by genre: {}", genre);
-        return ResponseEntity.ok(service.findByGenre(genre));
+            (@PathVariable String genre,
+             @RequestParam(defaultValue = "0", required = false) Integer pageNumber,
+             @RequestParam(defaultValue = "0", required = false) Integer pageSize,
+             @RequestParam(defaultValue = "false") Boolean paged,
+             @RequestParam(defaultValue = "false") Boolean sorted,
+             @RequestParam(defaultValue = "ASC") SortOrder sortOrder) {
+
+        log.debug("Fetch all Authors - [genre: {}, pageNumber: {}, pageSize: {}, paged: {}, sorted: {}, sortOrder: {}]", genre, pageNumber, pageSize, paged, sorted, sortOrder);
+
+        return ResponseEntity.ok((!paged)
+                ? service.findByGenre(genre)
+                : service.findByGenre(genre, pageNumber, pageSize, sorted, sortOrder));
     }
 
     @PatchMapping("/author/{id}/firstName")
