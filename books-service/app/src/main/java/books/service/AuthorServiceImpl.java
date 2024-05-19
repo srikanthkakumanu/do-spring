@@ -137,7 +137,7 @@ public class AuthorServiceImpl implements AuthorService<AuthorDTO> {
                                                           SortOrder sortOrder) {
 
         log.debug("Get all authors: [" +
-                        "firstName: {}, lastName: {}" +
+                        "firstName: {}, lastName: {}, " +
                         "pageNum: {}, pageSize: {}, sorted: {}, sortOrder: {}]",
                 firstName, lastName, pageNum, pageSize, sorted, sortOrder);
 
@@ -182,7 +182,7 @@ public class AuthorServiceImpl implements AuthorService<AuthorDTO> {
                                                SortOrder sortOrder) {
 
         log.debug("Get all authors: [" +
-                        "firstName: {}" +
+                        "firstName: {}, " +
                         "pageNum: {}, pageSize: {}, sorted: {}, sortOrder: {}]",
                 firstName, pageNum, pageSize, sorted, sortOrder);
 
@@ -207,7 +207,7 @@ public class AuthorServiceImpl implements AuthorService<AuthorDTO> {
                                               SortOrder sortOrder) {
 
         log.debug("Get all authors: [" +
-                        "lastName: {}" +
+                        "lastName: {}, " +
                         "pageNum: {}, pageSize: {}, sorted: {}, sortOrder: {}]",
                 lastName, pageNum, pageSize, sorted, sortOrder);
 
@@ -232,7 +232,7 @@ public class AuthorServiceImpl implements AuthorService<AuthorDTO> {
                                            SortOrder sortOrder) {
 
         log.debug("Get all authors: [" +
-                        "genre: {}" +
+                        "genre: {}, " +
                         "pageNum: {}, pageSize: {}, sorted: {}, sortOrder: {}]",
                 genre, pageNum, pageSize, sorted, sortOrder);
 
