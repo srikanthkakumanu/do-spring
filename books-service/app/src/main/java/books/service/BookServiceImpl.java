@@ -50,11 +50,31 @@ public class BookServiceImpl implements BookService<BookDTO> {
     }
 
     @Override
-    public void delete(BookDTO dto) {
+    public BookDTO delete(BookDTO dto) {
 
-        log.debug("Deleting Book: {}", dto.toString());
+        log.debug("Delete Book: [{}]", dto.toString());
 
-        this.repository.delete(mapper.dtoToDomain(dto, new Book()));
+        Book deleteBook = getBook(dto.getId());
+
+        this.repository.delete(deleteBook);
+
+        log.debug("Book Deleted: [{}]", deleteBook);
+
+        return mapper.domainToDto(deleteBook);
+    }
+
+    @Override
+    public BookDTO delete(UUID id) {
+
+        log.debug("Delete Book: [{}]", id);
+
+        Book deleteBook = getBook(id);
+
+        this.repository.delete(deleteBook);
+
+        log.debug("Book Deleted: [{}]", deleteBook);
+
+        return mapper.domainToDto(deleteBook);
     }
 
     @Override
@@ -70,17 +90,19 @@ public class BookServiceImpl implements BookService<BookDTO> {
     }
 
     public Iterable<BookDTO> findByTitle(String title) {
+
         List<Book> found = repository.findByTitle(title)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Book Not Found. title: " + title));
+                        "Books: [title: %s] Not Found.".formatted(title)));
 
         return ServiceUtils.toDTOList(found, mapper);
     }
 
     public Iterable<BookDTO> findByIsbn(String isbn) {
+
         List<Book> found = repository.findByIsbn(isbn)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Book Not Found. ISBN: " + isbn));
+                        "Books: [isbn: %s] Not Found.".formatted(isbn)));
 
         return ServiceUtils.toDTOList(found, mapper);
     }
@@ -88,15 +110,16 @@ public class BookServiceImpl implements BookService<BookDTO> {
     public Iterable<BookDTO> findByPublisher(String publisher) {
         List<Book> found = repository.findByPublisher(publisher)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Book Not Found. publisher: " + publisher));
+                        "Books: [publisher: %s] Not Found.".formatted(publisher)));
 
         return ServiceUtils.toDTOList(found, mapper);
     }
 
     public Iterable<BookDTO> findByAuthorId(UUID authorId) {
+
         List<Book> found = repository.findByAuthorId(authorId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Book Not Found. AuthorId: " + authorId));
+                        "Books: [authorId: %s] Not Found.".formatted(authorId)));
 
         return ServiceUtils.toDTOList(found, mapper);
     }
@@ -105,12 +128,7 @@ public class BookServiceImpl implements BookService<BookDTO> {
 
         return repository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    "Book Not Found. Id: " + id));
+                        "Book[Id: %s] Not Found.".formatted(id)));
 
-
-//        if (Objects.nonNull(book))
-//            return book;
-//        else
-//            throw new RuntimeException("Book {} not found ".formatted(id));
     }
 }

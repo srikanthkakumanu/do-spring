@@ -89,3 +89,18 @@ bootRun {
     String activeProfile =  System.properties['spring.profiles.active']
     systemProperty "spring.profiles.active", activeProfile
 }
+
+// This section causes useful test output to go to the terminal.
+test {
+    testLogging {
+        events "passed", "skipped", "failed" //, "standardOut", "standardError"
+
+        showExceptions true
+        exceptionFormat "full"
+        showCauses true
+        showStackTraces true
+
+        // Change to `true` for more verbose test output
+        showStandardStreams = false
+    }
+}

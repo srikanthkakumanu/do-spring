@@ -1,9 +1,12 @@
 package books.controller;
 
+import books.model.AuthorDTO;
 import books.model.BookDTO;
 import books.service.BookService;
 import books.validation.DomainValidationError;
 import books.validation.builder.DomainValidationErrorBuilder;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +19,7 @@ import java.net.URI;
 import java.util.UUID;
 
 @Slf4j
-@RequestMapping("/api")
+@RequestMapping("/api/books")
 @RestController
 public class BookController {
 
@@ -25,122 +28,53 @@ public class BookController {
 
 
     @Autowired
-    public BookController(BookService<BookDTO> bookService) {
+    private BookController(BookService<BookDTO> bookService) {
         this.service = bookService;
     }
 
-    @GetMapping("/books")
-    public ResponseEntity<Iterable<BookDTO>> getBooks() {
+    @GetMapping
+    private ResponseEntity<Iterable<BookDTO>> getBooks() {
         log.debug("Fetch all books");
         return ResponseEntity.ok(service.findAll());
     }
 
-    @GetMapping("/book/{id}")
-    public ResponseEntity<BookDTO> getBookById(@PathVariable UUID id) {
-        log.debug("Fetching Book: {}", id);
+    @GetMapping("/{id}")
+    private ResponseEntity<BookDTO> getBookById(@PathVariable UUID id) {
+        log.debug("Fetch Book: [id: {}]", id);
         return ResponseEntity.ok(service.findById(id));
     }
 
-    @GetMapping("/book/title/{title}")
-    public ResponseEntity<Iterable<BookDTO>> getBooksByTitle(@PathVariable String title) {
-        log.debug("Fetch all books by Title");
+    @GetMapping("/title")
+    private ResponseEntity<Iterable<BookDTO>> getBooksByTitle(
+            @RequestParam String title) {
+
+        log.debug("Fetch all books: [title: {}]", title);
         return ResponseEntity.ok(service.findByTitle(title));
     }
 
-    @GetMapping("/book/isbn/{isbn}")
-    public ResponseEntity<Iterable<BookDTO>> getBooksByIsbn(@PathVariable String isbn) {
-        log.debug("Fetch all books by ISBN");
+    @GetMapping("/isbn")
+    private ResponseEntity<Iterable<BookDTO>> getBooksByIsbn(
+            @RequestParam String isbn) {
+
+        log.debug("Fetch all books: [isbn: {}]", isbn);
         return ResponseEntity.ok(service.findByIsbn(isbn));
     }
 
-    @GetMapping("/book/publisher/{publisher}")
-    public ResponseEntity<Iterable<BookDTO>> getBooksByPublisher(@PathVariable String publisher) {
-        log.debug("Fetch all books by Publisher");
+    @GetMapping("/publisher")
+    private ResponseEntity<Iterable<BookDTO>> getBooksByPublisher(
+            @RequestParam String publisher) {
+
+        log.debug("Fetch all books: [publisher: {}]", publisher);
         return ResponseEntity.ok(service.findByPublisher(publisher));
     }
 
-    @GetMapping("/book/author/{id}")
-    public ResponseEntity<Iterable<BookDTO>> getBooksByAuthorId(@PathVariable UUID id) {
-        log.debug("Fetch all books by Author ID");
-        return ResponseEntity.ok(service.findByAuthorId(id));
+    @GetMapping("/author")
+    private ResponseEntity<Iterable<BookDTO>> getBooksByAuthorId(
+            @RequestParam UUID authorId) {
+
+        log.debug("Fetch all books: [authorId: {}]", authorId);
+        return ResponseEntity.ok(service.findByAuthorId(authorId));
     }
-
-    @PatchMapping("/book/{id}/title")
-    public ResponseEntity<BookDTO> setTitle(@PathVariable UUID id, @RequestBody String title) {
-        BookDTO findBook = service.findById(id);
-        findBook.setTitle(title);
-        BookDTO result = service.save(findBook);
-
-        log.debug("Book Title Updated : {}", result.toString());
-
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .buildAndExpand(result.getId())
-                .toUri();
-
-        return ResponseEntity
-                .ok()
-                .header("Location",location.toString())
-                .build();
-    }
-
-    @PatchMapping("/book/{id}/isbn")
-    public ResponseEntity<BookDTO> setIsbn(@PathVariable UUID id, @RequestBody String isbn) {
-        BookDTO findBook = service.findById(id);
-        findBook.setIsbn(isbn);
-        BookDTO result = service.save(findBook);
-
-        log.debug("Book ISBN Updated : {}", result.toString());
-
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .buildAndExpand(result.getId())
-                .toUri();
-
-        return ResponseEntity
-                .ok()
-                .header("Location",location.toString())
-                .build();
-    }
-
-    @PatchMapping("/book/{id}/publisher")
-    public ResponseEntity<BookDTO> setPublisher(@PathVariable UUID id, @RequestBody String publisher) {
-        BookDTO findBook = service.findById(id);
-        findBook.setPublisher(publisher);
-        BookDTO result = service.save(findBook);
-
-        log.debug("Book Publisher Updated : {}", result.toString());
-
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .buildAndExpand(result.getId())
-                .toUri();
-
-        return ResponseEntity
-                .ok()
-                .header("Location",location.toString())
-                .build();
-    }
-
-    @PatchMapping("/book/{id}/authorId")
-    public ResponseEntity<BookDTO> setAuthorId(@PathVariable UUID id, @RequestBody UUID authorId) {
-        BookDTO findBook = service.findById(id);
-        findBook.setAuthorId(authorId);
-        BookDTO result = service.save(findBook);
-
-        log.debug("Book Author ID Updated : {}", result.toString());
-
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .buildAndExpand(result.getId())
-                .toUri();
-
-        return ResponseEntity
-                .ok()
-                .header("Location",location.toString())
-                .build();
-    }
-
 
     /**
      * This annotation validates incoming data and is used as
@@ -151,9 +85,8 @@ public class BookController {
      * @param errors errorMap
      * @return JSON Response Entity
      */
-    @RequestMapping(value="/book",
-            method = {RequestMethod.POST,RequestMethod.PUT})
-    public ResponseEntity<?> createBook(
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.PUT})
+    private ResponseEntity<?> createBook(
             @Valid @RequestBody BookDTO book,
             Errors errors) {
 
@@ -166,7 +99,7 @@ public class BookController {
 
         BookDTO result = service.save(book);
 
-        log.debug("Book Saved : {}", result.toString());
+        log.debug("Book Saved : [{}]", result.toString());
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -175,23 +108,30 @@ public class BookController {
         return ResponseEntity.created(location).build();
     }
 
-    @DeleteMapping("/book/{id}")
-    public ResponseEntity<BookDTO> deleteBook(@PathVariable UUID id) {
-        service.delete(BookDTO.builder().id(id).build());
+    @DeleteMapping("/{id}")
+    private ResponseEntity<BookDTO> deleteBook(@PathVariable UUID id) {
 
-        log.debug("Book Deleted : {}", id);
+        log.debug("Delete Book : [{}]", id.toString());
 
-        return ResponseEntity.noContent().build();
+        BookDTO deleted = service.delete(BookDTO.builder().id(id).build());
+
+        log.debug("Book Deleted : [{}]", deleted);
+
+        return ResponseEntity.ok(deleted);
+
     }
 
-    @DeleteMapping("/book")
-    public ResponseEntity<BookDTO> deleteBook(@RequestBody BookDTO book) {
+    @DeleteMapping
+    private ResponseEntity<BookDTO> deleteBook(@RequestBody BookDTO book) {
 
-        service.delete(book);
+        log.debug("Delete Book: [{}]", book);
 
-        log.debug("Book Deleted : {}", book.toString());
+        BookDTO deleted = service.delete(book);
 
-        return ResponseEntity.noContent().build();
+        log.debug("Book Deleted : [{}]", deleted);
+
+        return ResponseEntity.ok(deleted);
+
     }
 
     /**
@@ -213,8 +153,85 @@ public class BookController {
 
     @ExceptionHandler
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public DomainValidationError handleException(Exception exception
+    private DomainValidationError handleException(Exception exception
             /*DataAccessException exception*/) {
         return new DomainValidationError(exception.getMessage());
     }
+
+//    @PatchMapping("/{id}/title")
+//    private ResponseEntity<BookDTO> setTitle(@PathVariable UUID id, @RequestBody String title) {
+//        BookDTO findBook = service.findById(id);
+//        findBook.setTitle(title);
+//        BookDTO result = service.save(findBook);
+//
+//        log.debug("Book Title Updated : {}", result.toString());
+//
+//        URI location = ServletUriComponentsBuilder
+//                .fromCurrentRequest()
+//                .buildAndExpand(result.getId())
+//                .toUri();
+//
+//        return ResponseEntity
+//                .ok()
+//                .header("Location",location.toString())
+//                .build();
+//    }
+//
+//    @PatchMapping("/{id}/isbn")
+//    private ResponseEntity<BookDTO> setIsbn(@PathVariable UUID id, @RequestBody String isbn) {
+//        BookDTO findBook = service.findById(id);
+//        findBook.setIsbn(isbn);
+//        BookDTO result = service.save(findBook);
+//
+//        log.debug("Book ISBN Updated : {}", result.toString());
+//
+//        URI location = ServletUriComponentsBuilder
+//                .fromCurrentRequest()
+//                .buildAndExpand(result.getId())
+//                .toUri();
+//
+//        return ResponseEntity
+//                .ok()
+//                .header("Location",location.toString())
+//                .build();
+//    }
+//
+//    @PatchMapping("/{id}/publisher")
+//    private ResponseEntity<BookDTO> setPublisher(@PathVariable UUID id, @RequestBody String publisher) {
+//        BookDTO findBook = service.findById(id);
+//        findBook.setPublisher(publisher);
+//        BookDTO result = service.save(findBook);
+//
+//        log.debug("Book Publisher Updated : {}", result.toString());
+//
+//        URI location = ServletUriComponentsBuilder
+//                .fromCurrentRequest()
+//                .buildAndExpand(result.getId())
+//                .toUri();
+//
+//        return ResponseEntity
+//                .ok()
+//                .header("Location",location.toString())
+//                .build();
+//    }
+//
+//    @PatchMapping("/{id}/authorId")
+//    private ResponseEntity<BookDTO> setAuthorId(@PathVariable UUID id, @RequestBody UUID authorId) {
+//        BookDTO findBook = service.findById(id);
+//        findBook.setAuthorId(authorId);
+//        BookDTO result = service.save(findBook);
+//
+//        log.debug("Book Author ID Updated : {}", result.toString());
+//
+//        URI location = ServletUriComponentsBuilder
+//                .fromCurrentRequest()
+//                .buildAndExpand(result.getId())
+//                .toUri();
+//
+//        return ResponseEntity
+//                .ok()
+//                .header("Location",location.toString())
+//                .build();
+//    }
+
 }

@@ -56,10 +56,31 @@ public class AuthorServiceImpl implements AuthorService<AuthorDTO> {
     }
 
     @Override
-    public void delete(AuthorDTO dto) {
+    public AuthorDTO delete(AuthorDTO dto) {
+
         log.debug("Delete Author: [{}]", dto.toString());
 
-        this.repository.delete(mapper.dtoToDomain(dto, new Author()));
+        Author deleteAuthor = getAuthor(dto.getId());
+
+        this.repository.delete(deleteAuthor);
+
+        log.debug("Author Deleted: [{}]", deleteAuthor);
+
+        return mapper.domainToDto(deleteAuthor);
+    }
+
+    @Override
+    public AuthorDTO delete(UUID id) {
+
+        log.debug("Delete Author: [{}]", id);
+
+        Author deleteAuthor = getAuthor(id);
+
+        this.repository.delete(deleteAuthor);
+
+        log.debug("Author Deleted: [{}]", deleteAuthor);
+
+        return mapper.domainToDto(deleteAuthor);
     }
 
     @Override
@@ -101,7 +122,9 @@ public class AuthorServiceImpl implements AuthorService<AuthorDTO> {
 
     @Override
     public Iterable<AuthorDTO> findByLastName(String lastName) {
-        log.debug("Get all authors:[lastName: {}]", lastName);
+
+        log.debug("Get all authors: [lastName: {}]", lastName);
+
         List<Author> found = repository.findByLastName(lastName)
                 .orElseThrow(() ->
                         new ResponseStatusException(HttpStatus.NOT_FOUND,
@@ -123,8 +146,11 @@ public class AuthorServiceImpl implements AuthorService<AuthorDTO> {
 
     @Override
     public Iterable<AuthorDTO> findAll(int pageNum, int pageSize) {
+
         log.debug("Get all authors: [pageNum: {}, pageSize: {}]", pageNum, pageSize);
+
         List<Author> allAuthors = repository.findAll(PageRequest.of(pageNum, pageSize)).toList();
+
         return ServiceUtils.toDTOList(allAuthors, mapper);
     }
 
@@ -171,6 +197,10 @@ public class AuthorServiceImpl implements AuthorService<AuthorDTO> {
                         .toList();
         }
 
+        if (found.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Authors: [firstName: %s, lastName: %s] Not Found.".formatted(firstName, lastName));
+
         return ServiceUtils.toDTOList(found, mapper);
     }
 
@@ -195,6 +225,10 @@ public class AuthorServiceImpl implements AuthorService<AuthorDTO> {
             else
                 found = repository.findByFirstName(firstName, PageRequest.of(pageNum, pageSize, Sort.by(Sort.Order.desc("firstName")))).toList();
         }
+
+        if (found.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Authors: [firstName: %s] Not Found.".formatted(firstName));
 
         return ServiceUtils.toDTOList(found, mapper);
     }
@@ -221,6 +255,10 @@ public class AuthorServiceImpl implements AuthorService<AuthorDTO> {
                 found = repository.findByLastName(lastName, PageRequest.of(pageNum, pageSize, Sort.by(Sort.Order.desc("lastName")))).toList();
         }
 
+        if (found.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Authors: [lastName: %s] Not Found.".formatted(lastName));
+
         return ServiceUtils.toDTOList(found, mapper);
     }
 
@@ -245,6 +283,10 @@ public class AuthorServiceImpl implements AuthorService<AuthorDTO> {
             else
                 found = repository.findByGenre(genre, PageRequest.of(pageNum, pageSize, Sort.by(Sort.Order.desc("genre")))).toList();
         }
+
+        if (found.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Authors: [genre: %s] Not Found.".formatted(genre));
 
         return ServiceUtils.toDTOList(found, mapper);
     }
