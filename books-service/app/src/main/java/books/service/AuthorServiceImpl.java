@@ -149,7 +149,7 @@ public class AuthorServiceImpl implements AuthorService<AuthorDTO> {
 
         log.debug("Get all authors: [pageNum: {}, pageSize: {}]", pageNum, pageSize);
 
-        List<Author> allAuthors = repository.findAll(PageRequest.of(pageNum, pageSize)).toList();
+        List<Author> allAuthors = repository.findAll(PageRequest.of(pageNum, pageSize)).getContent();
 
         return ServiceUtils.toDTOList(allAuthors, mapper);
     }
@@ -173,7 +173,7 @@ public class AuthorServiceImpl implements AuthorService<AuthorDTO> {
                     firstName,
                     lastName,
                     PageRequest.of(pageNum, pageSize))
-                    .toList();
+                    .getContent();
         else {
             if (sortOrder == SortOrder.ASC)
                 found = repository.findByFirstNameAndLastName(
@@ -184,7 +184,7 @@ public class AuthorServiceImpl implements AuthorService<AuthorDTO> {
                                 pageSize,
                                 Sort.by(Sort.Order.asc("firstName"),
                                         Sort.Order.asc("lastName"))))
-                        .toList();
+                        .getContent();
             else
                 found = repository.findByFirstNameAndLastName(
                         firstName,
@@ -194,7 +194,7 @@ public class AuthorServiceImpl implements AuthorService<AuthorDTO> {
                                 pageSize,
                                 Sort.by(Sort.Order.desc("firstName"),
                                         Sort.Order.desc("lastName"))))
-                        .toList();
+                        .getContent();
         }
 
         if (found.isEmpty())
@@ -218,12 +218,12 @@ public class AuthorServiceImpl implements AuthorService<AuthorDTO> {
 
         List<Author> found;
         if (!sorted)
-            found = repository.findByFirstName(firstName, PageRequest.of(pageNum, pageSize)).toList();
+            found = repository.findByFirstName(firstName, PageRequest.of(pageNum, pageSize)).getContent();
         else {
             if (sortOrder == SortOrder.ASC)
-                found = repository.findByFirstName(firstName, PageRequest.of(pageNum, pageSize, Sort.by(Sort.Order.asc("firstName")))).toList();
+                found = repository.findByFirstName(firstName, PageRequest.of(pageNum, pageSize, Sort.by(Sort.Order.asc("firstName")))).getContent();
             else
-                found = repository.findByFirstName(firstName, PageRequest.of(pageNum, pageSize, Sort.by(Sort.Order.desc("firstName")))).toList();
+                found = repository.findByFirstName(firstName, PageRequest.of(pageNum, pageSize, Sort.by(Sort.Order.desc("firstName")))).getContent();
         }
 
         if (found.isEmpty())
@@ -247,12 +247,12 @@ public class AuthorServiceImpl implements AuthorService<AuthorDTO> {
 
         List<Author> found;
         if (!sorted)
-            found = repository.findByLastName(lastName, PageRequest.of(pageNum, pageSize)).toList();
+            found = repository.findByLastName(lastName, PageRequest.of(pageNum, pageSize)).getContent();
         else {
             if (sortOrder == SortOrder.ASC)
-                found = repository.findByLastName(lastName, PageRequest.of(pageNum, pageSize, Sort.by(Sort.Order.asc("lastName")))).toList();
+                found = repository.findByLastName(lastName, PageRequest.of(pageNum, pageSize, Sort.by(Sort.Order.asc("lastName")))).getContent();
             else
-                found = repository.findByLastName(lastName, PageRequest.of(pageNum, pageSize, Sort.by(Sort.Order.desc("lastName")))).toList();
+                found = repository.findByLastName(lastName, PageRequest.of(pageNum, pageSize, Sort.by(Sort.Order.desc("lastName")))).getContent();
         }
 
         if (found.isEmpty())
@@ -276,12 +276,12 @@ public class AuthorServiceImpl implements AuthorService<AuthorDTO> {
 
         List<Author> found;
         if (!sorted)
-            found = repository.findByGenre(genre, PageRequest.of(pageNum, pageSize)).toList();
+            found = repository.findByGenre(genre, PageRequest.of(pageNum, pageSize)).getContent();
         else {
             if (sortOrder == SortOrder.ASC)
-                found = repository.findByGenre(genre, PageRequest.of(pageNum, pageSize, Sort.by(Sort.Order.asc("genre")))).toList();
+                found = repository.findByGenre(genre, PageRequest.of(pageNum, pageSize, Sort.by(Sort.Order.asc("genre")))).getContent();
             else
-                found = repository.findByGenre(genre, PageRequest.of(pageNum, pageSize, Sort.by(Sort.Order.desc("genre")))).toList();
+                found = repository.findByGenre(genre, PageRequest.of(pageNum, pageSize, Sort.by(Sort.Order.desc("genre")))).getContent();
         }
 
         if (found.isEmpty())
