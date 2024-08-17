@@ -1,5 +1,8 @@
 FROM eclipse-temurin:21
 LABEL authors="skakumanu"
+
+ENV JAVA_OPTS " -Xms512m -Xmx512m -Djava.security.egd=file:/dev/./urandom"
+
 RUN mkdir /opt/apps
 COPY api/app/build/libs/api.jar /opt/apps/api.jar
 #EXPOSE 9102
